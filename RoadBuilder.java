@@ -7,8 +7,8 @@ public class RoadBuilder extends Grid {
     static void visualize() {
         
     }
+
+    public static void main(String[] args) {
+
+    }
 }
-
-
-
-
