@@ -1,0 +1,16 @@
+public class Main {
+
+    // creates data structure containing 
+    static void grid() {
+
+    }
+    // prints 
+    static void visualize() {
+
+    }
+}
+
+
+public class Tile {
+    public Tile(int x-position, int y-position, boolean goal?)
+}
