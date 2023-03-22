@@ -2,22 +2,22 @@ public class Grid {
     public static Tile start;
 
 
-    public static neighbors() {
-
+    public static Tile[] neighbors() {
+        return null;
     }
 
     public class Tile {
-        public static above;
 
-        public Tile(int x-position, int y-position, boolean goal?, boolean obstace) {
+        public Tile(int x_position, int y_position, boolean is_goal, boolean is_obstacle) {
 
         }
 
-        public set_goal() {
+        public void set_goal() {
 
         }
 
         public static Tile[] neighbors() {
-            
+            return null;
         }
+    }
 }
