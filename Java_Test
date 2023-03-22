@@ -1,16 +1,35 @@
 public class Main {
 
-    // creates data structure containing 
-    static void grid() {
+    // bfs
+    static void pathfinding(Tile start) {
 
     }
-    // prints 
+    // prints grid
     static void visualize() {
-
+        
     }
 }
 
 
-public class Tile {
-    public Tile(int x-position, int y-position, boolean goal?)
+public class Grid {
+    
+    public static Tile start;
+
+
+    public static neighbors()
+
+    public class Tile {
+        public static above
+
+        public Tile(int x-position, int y-position, boolean goal?, boolean obstace) {
+
+        }
+
+        public set_goal()
+
+        public static Tile[] neighbors()
+    
 }
+}
+// creates data structure containing variables
+
