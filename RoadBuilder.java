@@ -9,13 +9,13 @@ public class RoadBuilder extends Grid {
     // bfs
     public static void bfs_pathfinding(Grid grid, Tile start, Tile goal) {
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // array of direction vectors
-        int m = grid.GetRows(); // number of rows
-        int n = grid.GetColumns(); // number of columns
+        int m = grid.getRows(); // number of rows
+        int n = grid.getColumns(); // number of columns
         int[][] parent = new int[m][n]; // array to keep track of the parent of each visited node
         boolean[][] visited = new boolean[m][n]; // array to keep track of visited nodes
         ArrayList<Tile> queue = new ArrayList<>(); // ArrayList to hold nodes to be processed
         queue.add(start); // add starting tile to queue
-        visited[start.GetRow()][start.GetColumn()] = true; // mark starting tile as visited
+        visited[start.getRow()][start.getColumn()] = true; // mark starting tile as visited
         int index = 0; // index of the current node being processed
         
         while (index < queue.size()) {
