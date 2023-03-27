@@ -6,6 +6,9 @@ import java.util.*;
 import javax.swing.*;
 
 public class RoadBuilder extends Grid {
+    // holds visualization
+    private static JFrame frame;
+    
     // bfs
     public static void bfs_pathfinding(Grid grid, Tile start, Tile goal) {
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // array of direction vectors
@@ -138,13 +141,35 @@ public class RoadBuilder extends Grid {
 
     // prints grid
     static void visualize(Grid grid) {
+        int rows = 10; //grid.getRows();
+        int columns = 16; //grid.getColumns();
+
+        frame = newFrame(rows, columns);
+    }
+    
+    // creates new frame
+    public static JFrame newFrame(int rows, int columns) {
+        GridLayout layout = new GridLayout(rows, columns);
+        layout.setVgap(-5);
+        layout.setHgap(-5);
+
         JFrame frame = new JFrame();
-        
-        frame.setLayout("GridLayout");
+        frame.setTitle("Pathfinding Visualization");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(layout);
+        frame.setSize(columns * 50, rows * 50);
+
+        // add tiles to grid
+        for (int i = 0; i < columns * rows; i++) {
+            frame.add(new MyButton());
+        }
+
         frame.setVisible(true);
+
+        return frame;
     }
 
     public static void main(String[] args) {
-        
+        visualize(new Grid());
     }
 }
