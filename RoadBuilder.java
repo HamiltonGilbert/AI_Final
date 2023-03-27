@@ -47,8 +47,8 @@ public class RoadBuilder extends Grid {
     // A*
     public static void aStar_pathfinding(Grid grid, Tile start, Tile goal) {
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // array of direction vectors
-        int m = grid.rows(); // number of rows
-        int n = grid.cols(); // number of columns
+        int m = grid.getRow(); // number of rows
+        int n = grid.getCols(); // number of columns
         int[][] parent = new int[m][n]; // array to keep track of the parent of each visited node
         double[][] gScore = new double[m][n]; // array to keep track of the cost to get to each node
         double[][] fScore = new double[m][n]; // array to keep track of the total estimated cost to reach the goal through each node
