@@ -17,12 +17,12 @@ but follow the same naming convention so they are easy to access
 
 public class Grid {
     // public static Tile start;
-    public static int rows;
-    public static int columns;
-    public static Tile start;
-    public static ArrayList<ArrayList<Integer>> obstacleLocations;
-    public static Tile[][] gridTiles;
-    public static Tile goal;
+    public int rows;
+    public int columns;
+    public Tile start;
+    public ArrayList<ArrayList<Integer>> obstacleLocations;
+    public Tile[][] gridTiles;
+    public Tile goal;
 
     public Grid(int rows, int columns, ArrayList<ArrayList<Integer>> obstacleLocations, Tile goal) {
         this.rows  = rows;
@@ -100,10 +100,10 @@ public class Grid {
 
 
     public class Tile {
-        public static int row;
-        public static int column;
-        public static int weight; //TODO how is weight determined?
-        public static boolean on_path;
+        public int row;
+        public int column;
+        public int weight; //TODO how is weight determined?
+        public boolean on_path;
 
         public Tile(int row, int column, boolean is_goal, boolean is_obstacle) {
             this.row = row;
@@ -118,6 +118,11 @@ public class Grid {
         }
         public int getColumn() {
             return column;
+        }
+
+        public int[][] getIndex() {
+            return null;
+            // TODO (ask Korinne)
         }
 
         public boolean isGoal() {
@@ -135,9 +140,6 @@ public class Grid {
         public int weight() {
             return this.weight;
         }
-
-
-
         
     }
 }
