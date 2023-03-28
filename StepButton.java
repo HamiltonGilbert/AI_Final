@@ -29,6 +29,6 @@ public class StepButton extends JButton implements MouseListener {
     }
     public void mouseReleased(MouseEvent e)
     {
-        Test.nextBtnHit();
+        RoadBuilder.nextBtnHit();
     }
 }
