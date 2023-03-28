@@ -9,9 +9,9 @@ public class MyButton extends JButton implements MouseListener {
     private boolean mousePressed = false;
     private ArrayList<ActionListener> listeners = new ArrayList<ActionListener>();
 
-    public MyButton() {
+    public MyButton(int width, int height) {
         super();
-
+        this.setSize(width, height);
         enableInputMethods(true);   
         addMouseListener(this);
     }
@@ -29,10 +29,12 @@ public class MyButton extends JButton implements MouseListener {
         notifyListeners(e);
         mousePressed = true;
         repaint();
+        setText("Hit");
     }
     public void mouseReleased(MouseEvent e)
     {
         mousePressed = false;
+        setText("");
     }
     public void addActionListener(ActionListener listener)
     {
