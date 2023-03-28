@@ -9,21 +9,18 @@ import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-public class RoadBuilder extends Grid {  //TODO super constructor
-    public RoadBuilder(int rows, int columns, ArrayList<ArrayList<Integer>> obstacleLocations, Grid.Tile goal) {
-        super(rows, columns, obstacleLocations, goal);
-        //TODO Auto-generated constructor stub
-    }
+// TODO: line 59, 87, 100, 134, 151
 
+public class RoadBuilder extends Grid {
     // temp holder of what step the visualization is on
     private static int stepNum = 0;
     // holds bfs path
     private static ArrayList<int[]> bfsPath;
-    // holds grid of buttons
-    private static GridButton[][] btnGrid;
-    // button dimensions
-    private static int buttonWidth = 100;
-    private static int buttonHeight = 100;
+    // holds grid of tiles
+    private static GridTile[][] tileGrid;
+    // tile dimensions
+    private static int tileWidth = 100;
+    private static int tileHeight = 100;
     
     // bfs
     public static void bfs_pathfinding(Grid grid, Tile start, Tile goal) {
@@ -59,7 +56,7 @@ public class RoadBuilder extends Grid {  //TODO super constructor
                 if (neighbor != null && neighbor.weight() == 1 && !visited[nx][ny]) {
                     queue.add(neighbor);
                     visited[nx][ny] = true;
-                    parent[nx][ny] = current.index();
+                    // FIX parent[nx][ny] = current.getIndex();
                 }
             }
         }
@@ -87,7 +84,7 @@ public class RoadBuilder extends Grid {  //TODO super constructor
                 // reconstruct path and mark it on the grid
                 while (current != start) {
                     grid.getTile(current.getRow(), current.getColumn()).set_path(true); // mark tile as part of path
-                    current = grid.getTile(parent[current.getRow()][current.getColumn()]); // get parent tile
+                    // FIX current = grid.getTile(parent[current.getRow()][current.getColumn()]); // get parent tile
                 }
                 grid.getTile(start.getRow(), start.getColumn()).set_path(true); // mark starting tile as part of path
                 return;
@@ -100,7 +97,7 @@ public class RoadBuilder extends Grid {  //TODO super constructor
                 if (neighbor != null && neighbor.weight() == 1 && !visited[nx][ny]) {
                     double tentativeGScore = gScore[current.getRow()][current.getColumn()] + 1; // cost to get to neighbor through current
                     if (!queue.contains(neighbor) || tentativeGScore < gScore[nx][ny]) {
-                        parent[nx][ny] = current.index();
+                        // FIX parent[nx][ny] = current.index();
                         gScore[nx][ny] = tentativeGScore;
                         fScore[nx][ny] = tentativeGScore + heuristic(neighbor, goal);
                         if (!queue.contains(neighbor)) {
@@ -134,7 +131,7 @@ public class RoadBuilder extends Grid {  //TODO super constructor
                 // reconstruct path and mark it on the grid
                 while (current != start) {
                     grid.getTile(current.getRow(), current.getColumn()).set_path(true); // mark tile as part of path
-                    current = grid.getTile(parent[current.getRow()][current.getColumn()]); // get parent tile
+                    // FIX current = grid.getTile(parent[current.getRow()][current.getColumn()]); // get parent tile
                 }
                 grid.getTile(start.getRow(), start.getColumn()).set_path(true); // mark starting tile as part of path
                 return;
@@ -151,7 +148,7 @@ public class RoadBuilder extends Grid {  //TODO super constructor
                     int new_dist = dist[current.getRow()][current.getColumn()] + 1; // assuming edge weights of 1
                     if (new_dist < dist[nx][ny]) {
                         dist[nx][ny] = new_dist;
-                        parent[nx][ny] = current.index();
+                        // FIX parent[nx][ny] = current.index();
                         queue.add(neighbor);
                     }
                 }
@@ -171,7 +168,7 @@ public class RoadBuilder extends Grid {  //TODO super constructor
     
     // creates new frame
     public static JFrame newFrame(int rows, int columns) {
-        BorderLayout frameLayout = new BorderLayout(0, buttonHeight/2);
+        BorderLayout frameLayout = new BorderLayout(0, tileHeight/2);
         GridLayout gridLayout = new GridLayout(rows, columns);
         BorderLayout menuLayout = new BorderLayout(0, 0);
         gridLayout.setVgap(-5);
@@ -181,26 +178,26 @@ public class RoadBuilder extends Grid {  //TODO super constructor
         frame.setTitle("Pathfinding Visualization");
         frame.setLayout(frameLayout);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(new Dimension(columns * buttonWidth, (rows + 1) * buttonHeight));
+        frame.setSize(new Dimension(columns * tileWidth, (rows + 1) * tileHeight));
         
         JPanel menu = new JPanel();
         menu.setLayout(menuLayout);
-        menu.setSize(columns * buttonWidth, buttonHeight);
-        StepButton step = new StepButton("Step", new Dimension(buttonWidth, buttonHeight/2));
-        step.setPreferredSize(new Dimension(buttonWidth, buttonHeight/2));
+        menu.setSize(columns * tileWidth, tileHeight);
+        StepButton step = new StepButton("Step", new Dimension(tileWidth, tileHeight/2));
+        step.setPreferredSize(new Dimension(tileWidth, tileHeight/2));
         menu.add(step, BorderLayout.WEST);
 
         JPanel gridPanel = new JPanel();
         gridPanel.setLayout(gridLayout);
-        gridPanel.setPreferredSize(new Dimension(columns * buttonWidth, rows * buttonHeight));
+        gridPanel.setPreferredSize(new Dimension(columns * tileWidth, rows * tileHeight));
 
         // add tiles to grid
-        btnGrid = new GridButton[rows][columns];
+        tileGrid = new GridTile[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                GridButton btn = new GridButton(new Dimension(buttonWidth, buttonHeight));
-                btnGrid[i][j] = btn;
-                gridPanel.add(btn);
+                GridTile tile = new GridTile(new Dimension(tileWidth, tileHeight));
+                tileGrid[i][j] = tile;
+                gridPanel.add(tile);
             }
         }
 
@@ -220,8 +217,8 @@ public class RoadBuilder extends Grid {  //TODO super constructor
         int row = pair[0];
         int column = pair[1];
 
-        GridButton btn = btnGrid[row][column];
-        btn.setVisited(stepNum);
+        GridTile tile = tileGrid[row][column];
+        tile.setVisited(stepNum);
         stepNum++;
 
         return path;
