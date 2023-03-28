@@ -8,8 +8,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 public class RoadBuilder extends Grid {
-    // holds visualization
-    private static JFrame frame;
+    // temp holder of what step the visualization is on
+    private static int stepNum = 0;
+    // holds bfs path
+    private static ArrayList<int[]> bfsPath;
+    // holds grid of buttons
+    private static GridButton[][] btnGrid;
     // button dimensions
     private static int buttonWidth = 100;
     private static int buttonHeight = 100;
@@ -145,11 +149,12 @@ public class RoadBuilder extends Grid {
 
 
     // prints grid
-    static void visualize(Grid grid, int[][] path) {
+    static void visualize(Grid grid, ArrayList<int[]> path) {
         int rows = 4; //grid.getRows();
         int columns = 6; //grid.getColumns();
 
-        frame = newFrame(rows, columns);
+        JFrame frame = newFrame(rows, columns);
+        frame.setVisible(true);
     }
     
     // creates new frame
@@ -169,7 +174,7 @@ public class RoadBuilder extends Grid {
         JPanel menu = new JPanel();
         menu.setLayout(menuLayout);
         menu.setSize(columns * buttonWidth, buttonHeight);
-        JButton step = new JButton("Step");
+        StepButton step = new StepButton("Step", new Dimension(buttonWidth, buttonHeight/2));
         step.setPreferredSize(new Dimension(buttonWidth, buttonHeight/2));
         menu.add(step, BorderLayout.WEST);
 
@@ -178,8 +183,13 @@ public class RoadBuilder extends Grid {
         gridPanel.setPreferredSize(new Dimension(columns * buttonWidth, rows * buttonHeight));
 
         // add tiles to grid
-        for (int i = 0; i < columns * rows; i++) {
-            gridPanel.add(new MyButton(buttonWidth, buttonHeight));
+        btnGrid = new GridButton[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                GridButton btn = new GridButton(new Dimension(buttonWidth, buttonHeight));
+                btnGrid[i][j] = btn;
+                gridPanel.add(btn);
+            }
         }
 
         frame.add(menu, BorderLayout.NORTH);
@@ -187,9 +197,30 @@ public class RoadBuilder extends Grid {
         return frame;
     }
 
+    public static void nextBtnHit() {
+        if (!bfsPath.isEmpty()) {
+            bfsPath = viewNextTile(bfsPath);
+        }
+    }
+
+    public static ArrayList<int[]> viewNextTile(ArrayList<int[]> path) {
+        int[] pair = path.remove(0);
+        int row = pair[0];
+        int column = pair[1];
+
+        GridButton btn = btnGrid[row][column];
+        btn.setVisited(stepNum);
+        stepNum++;
+
+        return path;
+    }
+
     public static void main(String[] args) {
-        int[][] path = {{0, 0}, {0, 1}, {0, 2}};
-        visualize(new Grid(), path);
-        frame.setVisible(true);
+        bfsPath = new ArrayList<int[]>();
+        int[][] visited = {{0, 0}, {0, 1}, {1, 0}, {1, 1}, {1, 2}, {2, 1}};
+        for (int i = 0; i < visited.length; i++) {
+            bfsPath.add(visited[i]);
+        }
+        visualize(new Grid(), bfsPath);
     }
 }
