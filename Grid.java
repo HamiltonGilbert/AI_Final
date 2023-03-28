@@ -13,9 +13,14 @@ public class Grid {
         this.rows  = rows;
         this.columns = columns;
         this.obstacleLocations = obstacleLocations;
+<<<<<<< HEAD
         this.goalCoords = goalCoords;
         this.startCoords = startCoords;
         init_grid();
+=======
+        this.goal = goal;
+        init_grid(); 
+>>>>>>> 73b2ead (fixed initialization of params in Grid.java)
     }
 
     public Grid(int rows, int columns, int[][] obstacleLocations) {
@@ -89,17 +94,26 @@ public class Grid {
 
 
     public class Tile {
+<<<<<<< HEAD
         public int row;
         public int column;
         public int weight; //TODO how is weight determined?
         public boolean on_path;
         public boolean isObstacle;
+=======
+        public static int row;
+        public static int column;
+        public static int weight; //TODO how is weight determined?
+        public static boolean on_path;
+        public static boolean is_obstacle;
+>>>>>>> 73b2ead (fixed initialization of params in Grid.java)
 
         public Tile(int row, int column, boolean is_goal, boolean is_obstacle) {
             this.row = row;
             this.column = column;
             this.on_path = false;
             this.weight = 0;
+            this.is_obstacle = is_obstacle;
             
         }
 
@@ -120,7 +134,7 @@ public class Grid {
         }
         
         public boolean isObstacle() {
-            return isObstacle();
+            return this.is_obstacle;
         }
 
         public void setObstacle(boolean b) {
