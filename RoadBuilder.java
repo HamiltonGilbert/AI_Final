@@ -2,12 +2,19 @@ import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.ArrayList;
+import java.util.Comparator;
+
 import javax.swing.*;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-public class RoadBuilder extends Grid {
+public class RoadBuilder extends Grid {  //TODO super constructor
+    public RoadBuilder(int rows, int columns, ArrayList<ArrayList<Integer>> obstacleLocations, Grid.Tile goal) {
+        super(rows, columns, obstacleLocations, goal);
+        //TODO Auto-generated constructor stub
+    }
+
     // temp holder of what step the visualization is on
     private static int stepNum = 0;
     // holds bfs path
@@ -37,7 +44,9 @@ public class RoadBuilder extends Grid {
                 // reconstruct path and mark it on the grid
                 while (current != start) {
                     grid.getTile(current.getRow(), current.getColumn()).set_path(true); // mark tile as part of path
-                    current = grid.getTile(parent[current.getRow()][current.getColumn()]); // get parent tile
+                    // current = grid.getTile(parent[current.getRow()][current.getColumn()]); // get parent tile
+
+                    current = grid.getTile(current.getRow(), current.getColumn());
                 }
                 grid.getTile(start.getRow(), start.getColumn()).set_path(true); // mark starting tile as part of path
                 return;
@@ -56,11 +65,14 @@ public class RoadBuilder extends Grid {
         }
     }
 
-    // A*
+    //NOTES FROM KENNA:
+    // Changed grid.getRow() to grid.getRows()  same for grid.getColumns()
+
+    // A*  
     public static void aStar_pathfinding(Grid grid, Tile start, Tile goal) {
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // array of direction vectors
-        int m = grid.getRow(); // number of rows
-        int n = grid.getColumn(); // number of columns
+        int m = grid.getRows(); // number of rows
+        int n = grid.getColumns(); // number of columns
         int[][] parent = new int[m][n]; // array to keep track of the parent of each visited node
         double[][] gScore = new double[m][n]; // array to keep track of the cost to get to each node
         double[][] fScore = new double[m][n]; // array to keep track of the total estimated cost to reach the goal through each node
@@ -108,8 +120,8 @@ public class RoadBuilder extends Grid {
      // Dijkstra's algorithm
     public static void dijkstra_pathfinding(Grid grid, Tile start, Tile goal) {
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // array of direction vectors
-        int m = grid.getRow(); // number of rows
-        int n = grid.getColumn(); // number of columns
+        int m = grid.getRows(); // number of rows
+        int n = grid.getColumns(); // number of columns
         int[][] parent = new int[m][n]; // array to keep track of the parent of each visited node
         int[][] dist = new int[m][n]; // array to keep track of the shortest distance to each visited node
         boolean[][] visited = new boolean[m][n]; // array to keep track of visited nodes
