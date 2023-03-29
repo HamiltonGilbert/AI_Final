@@ -20,57 +20,60 @@ public class Grid {
     public int rows;
     public int columns;
     public Tile start;
-    public ArrayList<ArrayList<Integer>> obstacleLocations;
+    public int[][] obstacleLocations;
     public Tile[][] gridTiles;
     public Tile goal;
+    public int[] goalCoords;
 
-    public Grid(int rows, int columns, ArrayList<ArrayList<Integer>> obstacleLocations, Tile goal) {
+    public Grid(int rows, int columns, int[][] obstacleLocations, int[] goalCoords) {
         this.rows  = rows;
         this.columns = columns;
         this.obstacleLocations = obstacleLocations;
-        this.goal = goal;
+        // this.goal = goal;
         init_grid();
     }
 
-    public Grid(int rows, int columns, ArrayList<ArrayList<Integer>> obstacleLocations) {
+    public Grid(int rows, int columns, int[][] obstacleLocations) {
         this.rows  = rows;
         this.columns = columns;
         this.obstacleLocations = obstacleLocations;
-        this.goal = null;
+        // this.goal = null;
         init_grid();
     }
 
     public Grid(int rows, int columns) {
         this.rows  = rows;
         this.columns = columns;
-        this.obstacleLocations = new ArrayList<ArrayList<Integer>>();
-        this.goal = null;
+        //this.obstacleLocations;
+        // this.goal = null;
         init_grid();
     }
 
     public Grid() {
         this.rows = 0;
         this.columns = 0;
-        this.obstacleLocations = new ArrayList<ArrayList<Integer>>();
-        this.goal = null;
+        //this.obstacleLocations;
+        // this.goal = null;
         init_grid();
     }
 
     private void init_grid() {
         for (int i = 0; i < getRows(); i++) {
             for (int j = 1; j < getColumns(); j++) {
-                ArrayList<Integer> currentCoord = new ArrayList<Integer>();
-                currentCoord.add(i,j);
-                if (this.obstacleLocations.contains(currentCoord)) {        //TODO check if logically correct
-                    this.gridTiles[i][j] = new Tile(i,j,false,true);
-                } else {
-                    if ((this.goal.getRow() == i) && (this.goal.getColumn() == j)) {
-                        this.gridTiles[i][j] = new Tile(i,j,true,false);
-                    }
-                    this.gridTiles[i][j] = new Tile(i,j,false,false);
-                }
+                this.gridTiles[i][j] = new Tile(i,j,false,false);
             }
         }
+
+        // add obstacles
+        for (int i = 0; i < obstacleLocations.length; i++) {
+            int row = obstacleLocations[i][0];
+            int column = obstacleLocations[i][1];
+            gridTiles[row][column].setObstacle(true);
+        }
+
+        // add goal
+        goal = gridTiles[goalCoords[0]][goalCoords[1]];
+        goal.setGoal(true);
     }
 
     public static Tile[] neighbors() {
@@ -137,7 +140,7 @@ public class Grid {
             return isObstacle();
         }
         
-        public void setObstacle(bool b) {
+        public void setObstacle(boolean b) {
             isObstacle = b;
         }
 
