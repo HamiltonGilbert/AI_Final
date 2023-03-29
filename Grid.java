@@ -129,8 +129,16 @@ public class Grid {
             return isGoal();
         }
         
+        public void setGoal(bool b) {
+            isGoal = b;
+        }
+        
         public boolean isObstacle() {
             return isObstacle();
+        }
+        
+        public void setObstacle(bool b) {
+            isObstacle = b;
         }
 
         public void set_path(boolean on_path){
