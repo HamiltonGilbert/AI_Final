@@ -161,16 +161,16 @@ public class RoadBuilder extends Grid {
 
 
     // prints grid
-    static void visualize(Grid grid, ArrayList<int[]> path) {
+    static void visualize(Grid grid, ArrayList<int[]> path, int[][] obstacles) {
         int rows = grid.getRows();
         int columns = grid.getColumns();
 
-        JFrame frame = newFrame(rows, columns);
+        JFrame frame = newFrame(rows, columns, obstacles);
         frame.setVisible(true);
     }
     
     // creates new frame
-    public static JFrame newFrame(int rows, int columns) {
+    public static JFrame newFrame(int rows, int columns, int[][] obstacles) {
         BorderLayout frameLayout = new BorderLayout(0, tileHeight/2);
         GridLayout gridLayout = new GridLayout(rows, columns);
         BorderLayout menuLayout = new BorderLayout(0, 0);
@@ -198,10 +198,17 @@ public class RoadBuilder extends Grid {
         tileGrid = new GridTile[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                GridTile tile = new GridTile(new Dimension(tileWidth, tileHeight));
+                GridTile tile = new GridTile(new Dimension(tileWidth, tileHeight), false);
                 tileGrid[i][j] = tile;
                 gridPanel.add(tile);
             }
+        }
+        
+        // set obstacles
+        for (int i = 0; i < obstacles.length; i++) {
+            int row = obstacles[i][0];
+            int column = obstacles[i][1];
+            tileGrid[row][column].setObstacle();
         }
 
         frame.add(menu, BorderLayout.NORTH);
@@ -247,7 +254,7 @@ public class RoadBuilder extends Grid {
         Grid grid = new Grid(gridRows, gridColumns, obstacles, goal, start);
         //Grid grid = new Grid(gridRows, gridColumns);
         
-        visualize(grid, bfsPath);
+        visualize(grid, bfsPath, obstacles);
 
     }
 

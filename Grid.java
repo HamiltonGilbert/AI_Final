@@ -1,25 +1,9 @@
-import java.util.ArrayList;
-
-/*  
-FOR KENNA:
-What we need:
-
-Grid: (either function or variable with getters and setters)
-rows (int), columns (int), start (Tile), tileArray (Tile[][]), 
-neighbors (Tile[])
-
-Tile: (either function or variable with getters and setters)
-row (int), column (int), isGoal (bool), isObstacle (bool)
-
-these are just the ones I can think of, feel free to add others you need
-but follow the same naming convention so they are easy to access
-*/
-
 public class Grid {
     // public static Tile start;
     public int rows;
     public int columns;
     public Tile start;
+    public int[] startCoords;
     public int[][] obstacleLocations;
     public Tile[][] gridTiles;
     public Tile goal;
@@ -29,7 +13,8 @@ public class Grid {
         this.rows  = rows;
         this.columns = columns;
         this.obstacleLocations = obstacleLocations;
-        // this.goal = goal;
+        this.goalCoords = goalCoords;
+        this.startCoords = startCoords;
         init_grid();
     }
 
@@ -58,9 +43,10 @@ public class Grid {
     }
 
     private void init_grid() {
+        gridTiles = new Tile[getRows()][getColumns()];
         for (int i = 0; i < getRows(); i++) {
-            for (int j = 1; j < getColumns(); j++) {
-                this.gridTiles[i][j] = new Tile(i,j,false,false);
+            for (int j = 0; j < getColumns(); j++) {
+                gridTiles[i][j] = new Tile(i,j,false,false);
             }
         }
 
@@ -73,7 +59,7 @@ public class Grid {
 
         // add goal
         goal = gridTiles[goalCoords[0]][goalCoords[1]];
-        goal.setGoal(true);
+        //goal.setGoal(true);
     }
 
     public static Tile[] neighbors() {
@@ -107,6 +93,7 @@ public class Grid {
         public int column;
         public int weight; //TODO how is weight determined?
         public boolean on_path;
+        public boolean isObstacle;
 
         public Tile(int row, int column, boolean is_goal, boolean is_obstacle) {
             this.row = row;
@@ -132,14 +119,10 @@ public class Grid {
             return isGoal();
         }
         
-        public void setGoal(bool b) {
-            isGoal = b;
-        }
-        
         public boolean isObstacle() {
             return isObstacle();
         }
-        
+
         public void setObstacle(boolean b) {
             isObstacle = b;
         }
