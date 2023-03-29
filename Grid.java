@@ -25,7 +25,7 @@ public class Grid {
     public Tile goal;
     public int[] goalCoords;
 
-    public Grid(int rows, int columns, int[][] obstacleLocations, int[] goalCoords) {
+    public Grid(int rows, int columns, int[][] obstacleLocations, int[] goalCoords, int[] startCoords) {
         this.rows  = rows;
         this.columns = columns;
         this.obstacleLocations = obstacleLocations;
