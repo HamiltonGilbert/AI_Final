@@ -2,7 +2,9 @@ import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+
 
 import javax.swing.*;
 import java.awt.GridLayout;
@@ -19,8 +21,9 @@ public class RoadBuilder extends Grid {
     // holds grid of tiles
     private static GridTile[][] tileGrid;
     // tile dimensions
-    private static int tileWidth = 100;
-    private static int tileHeight = 100;
+    private static int tileWidth;
+    private static int tileHeight;
+
     
     // bfs
     public static void bfs_pathfinding(Grid grid, Tile start, Tile goal) {
@@ -159,8 +162,8 @@ public class RoadBuilder extends Grid {
 
     // prints grid
     static void visualize(Grid grid, ArrayList<int[]> path) {
-        int rows = 4; //grid.getRows();
-        int columns = 6; //grid.getColumns();
+        int rows = grid.getRows();
+        int columns = grid.getColumns();
 
         JFrame frame = newFrame(rows, columns);
         frame.setVisible(true);
@@ -225,11 +228,35 @@ public class RoadBuilder extends Grid {
     }
 
     public static void main(String[] args) {
-        bfsPath = new ArrayList<int[]>();
-        int[][] visited = {{0, 0}, {0, 1}, {1, 0}, {1, 1}, {1, 2}, {2, 1}};
-        for (int i = 0; i < visited.length; i++) {
-            bfsPath.add(visited[i]);
+        // set variables
+        tileHeight = 100;
+        tileWidth = 100;
+        int gridRows = 4;
+        int gridColumns = 6;
+        int[] goal = {3, 5};
+        int[] start = {0, 0};
+
+        // choose tiles to be obstacles
+        int[][] obstacles = {{2, 2}, {3, 1}, {3, 0}, {1, 5}, {3, 3}, {3, 4}};
+        //ArrayList<int[]> obstaclesList = addAll(obstacles);
+
+        // temp until using algorithm
+        int[][] path = {{0, 0}, {0, 1}, {1, 0}, {1, 1}, {1, 2}, {2, 1}};
+        bfsPath = addAll(path);
+
+        Grid grid = new Grid(gridRows, gridColumns, obstacles, goal, start);
+        //Grid grid = new Grid(gridRows, gridColumns);
+        
+        visualize(grid, bfsPath);
+
+    }
+
+    // helper function to convert int[][] to ArrayList<int[]>
+    public static ArrayList<int[]> addAll(int[][] toAdd) {
+        ArrayList<int[]> list = new ArrayList<int[]>();
+        for (int i = 0; i < toAdd.length; i++) {
+            list.add(toAdd[i]);
         }
-        visualize(new Grid(), bfsPath);
+        return list;
     }
 }
