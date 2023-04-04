@@ -5,7 +5,7 @@ public class Grid {
     private Tile start;
 
     private int[] startCoords;
-    private int[][] obstacleLocations;
+    private int[][] obstacles;
     private Tile[][] gridTiles;
     private Tile goal;
     private int[] goalCoords;
@@ -17,7 +17,7 @@ public class Grid {
     public Grid(int rows, int columns, int[][] obstacleLocations, int[] goalCoords, int[] startCoords) {
         this.rows  = rows;
         this.columns = columns;
-        this.obstacleLocations = obstacleLocations;
+        this.obstacles = obstacleLocations;
         this.goalCoords = goalCoords;
         this.startCoords = startCoords;
         init_grid();
@@ -26,7 +26,7 @@ public class Grid {
     public Grid(int rows, int columns, int[][] obstacleLocations) {
         this.rows  = rows;
         this.columns = columns;
-        this.obstacleLocations = obstacleLocations;
+        this.obstacles = obstacleLocations;
         // this.goal = null;
         init_grid();
     }
@@ -56,9 +56,9 @@ public class Grid {
         }
 
         // add obstacles
-        for (int i = 0; i < obstacleLocations.length; i++) {
-            int row = obstacleLocations[i][0];
-            int column = obstacleLocations[i][1];
+        for (int i = 0; i < obstacles.length; i++) {
+            int row = obstacles[i][0];
+            int column = obstacles[i][1];
             gridTiles[row][column].setObstacle(true);
         }
 
@@ -91,6 +91,9 @@ public class Grid {
         return this.goal;
     }
 
+    public int[][] getObstacles() {
+        return this.obstacles;
+    }
 
 
     public class Tile {
