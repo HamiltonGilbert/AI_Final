@@ -1,18 +1,18 @@
 public class Grid {
-    // public static Tile start;
-    public int rows;
-    public int columns;
-    public Tile start;
+    // private static Tile start;
+    private int rows;
+    private int columns;
+    private Tile start;
 
-    public int[] startCoords;
-    public int[][] obstacleLocations;
-    public Tile[][] gridTiles;
-    public Tile goal;
-    public int[] goalCoords;
+    private int[] startCoords;
+    private int[][] obstacleLocations;
+    private Tile[][] gridTiles;
+    private Tile goal;
+    private int[] goalCoords;
 
-    // public ArrayList<ArrayList<Integer>> obstacleLocations;
-    // public Tile[][] gridTiles;
-    // public Tile goal;
+    // private ArrayList<ArrayList<Integer>> obstacleLocations;
+    // private Tile[][] gridTiles;
+    // private Tile goal;
 
     public Grid(int rows, int columns, int[][] obstacleLocations, int[] goalCoords, int[] startCoords) {
         this.rows  = rows;
@@ -95,12 +95,12 @@ public class Grid {
 
     public class Tile {
 
-        public int row;
-        public int column;
-        public int weight; //TODO how is weight determined?
-        public boolean on_path;
+        private int row;
+        private int column;
+        private int weight; //TODO how is weight determined?
+        private boolean on_path;
 
-        public boolean is_obstacle;
+        private boolean is_obstacle;
 
         public Tile(int row, int column, boolean is_goal, boolean is_obstacle) {
             this.row = row;
