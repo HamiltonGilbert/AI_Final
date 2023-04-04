@@ -1,9 +1,4 @@
-import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.Set;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 
 public class RoadBuilder extends Grid {
     public static void main(String[] args) {
@@ -19,15 +14,17 @@ public class RoadBuilder extends Grid {
         int[][] obstacles = {{2, 2}, {3, 1}, {3, 0}, {1, 5}, {3, 3}, {3, 4}};
         //ArrayList<int[]> obstaclesList = addAll(obstacles);
 
-        // temp until using algorithm
+        // temp path until using algorithm
         int[][] path = {{0, 0}, {0, 1}, {1, 0}, {1, 1}, {1, 2}, {2, 1}};
         ArrayList<int[]> bfsPath = addAll(path);
 
         Grid grid = new Grid(gridRows, gridColumns, obstacles, goal, start);
         //Grid grid = new Grid(gridRows, gridColumns);
         
-        new Visualization(grid, bfsPath, obstacles, tileWidth, tileHeight);
+        Visualization vis = new Visualization(grid, tileWidth, tileHeight);
 
+        // GET RID OF ONCE PATHFINDER WORKS
+        vis.bfsPath = addAll(path);
     }
 
     // helper function to convert int[][] to ArrayList<int[]>
