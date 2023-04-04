@@ -82,6 +82,10 @@ public class Grid {
     public Tile getTile(int row, int column) {
         return gridTiles[row][column];
     }
+    
+    public Tile[][] getGridTiles() {
+        return gridTiles;
+    }
 
     public void setGoal(Tile goal) {
         this.goal = goal;
