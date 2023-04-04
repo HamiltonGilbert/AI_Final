@@ -7,7 +7,7 @@ import java.util.Comparator;
 
 // TODO: line 54, 82, 95, 129, 146
 
-public class Pathfinder {
+public class Pathfinder extends Grid {
     private static Grid grid;
     private static Tile start;
     private static Tile goal;
