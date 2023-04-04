@@ -3,6 +3,8 @@ import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+import java.util.ArrayList;
+
 public class Visualization {
     // temp holder of what step the visualization is on
     private static int stepNum = 0;
@@ -16,8 +18,14 @@ public class Visualization {
     private static int tileWidth;
     private static int tileHeight;
 
-    public Visualization(Grid grid, ArrayList<int[]> path, int[][] obstacles) {
-        visualize(grid, path, obstacles);
+    private static ArrayList<int[]> visualized;
+
+    public Visualization(Grid grid, ArrayList<int[]> newBFSPath, int[][] obstacles, int width, int height) {
+        tileWidth = width;
+        tileHeight = height;
+        bfsPath = newBFSPath;
+        visualized = new ArrayList<int[]>();
+        visualize(grid, bfsPath, obstacles);
     }
     static void visualize(Grid grid, ArrayList<int[]> path, int[][] obstacles) {
         int rows = grid.getRows();
@@ -29,9 +37,9 @@ public class Visualization {
     
     // creates new frame
     public static JFrame newFrame(int rows, int columns, int[][] obstacles) {
-        BorderLayout frameLayout = new BorderLayout(0, tileHeight/2);
+        BorderLayout frameLayout = new BorderLayout(0, 0);
         GridLayout gridLayout = new GridLayout(rows, columns);
-        BorderLayout menuLayout = new BorderLayout(0, 0);
+        BorderLayout menuLayout = new BorderLayout(0, -10);
         gridLayout.setVgap(-5);
         gridLayout.setHgap(-5);
 
@@ -43,10 +51,21 @@ public class Visualization {
         
         JPanel menu = new JPanel();
         menu.setLayout(menuLayout);
-        menu.setSize(columns * tileWidth, tileHeight);
-        StepButton step = new StepButton("Step", new Dimension(tileWidth, tileHeight/2));
+        menu.setSize(tileWidth, tileHeight);
+        // JPanel buttons = new JPanel();
+        // buttons.setLayout(new BorderLayout());
+        StepButton step = new StepButton(new Dimension(tileWidth, tileHeight/2), true);
+        StepButton backStep = new StepButton(new Dimension(tileWidth, tileHeight/2), false);
         step.setPreferredSize(new Dimension(tileWidth, tileHeight/2));
-        menu.add(step, BorderLayout.WEST);
+        backStep.setPreferredSize(new Dimension(tileWidth, tileHeight/2));
+        // buttons.add(step, BorderLayout.SOUTH);
+        // buttons.add(backStep, BorderLayout.SOUTH);
+        // menu.add(buttons, BorderLayout.WEST);
+        menu.add(step, BorderLayout.NORTH);
+        menu.add(backStep, BorderLayout.SOUTH);
+        JPanel blankSpace = new JPanel();
+        blankSpace.setSize(new Dimension(columns * tileWidth/2, tileHeight));
+        menu.add(new JPanel(), BorderLayout.EAST);
 
         JPanel gridPanel = new JPanel();
         gridPanel.setLayout(gridLayout);
@@ -68,7 +87,6 @@ public class Visualization {
             int column = obstacles[i][1];
             tileGrid[row][column].setObstacle();
         }
-
         frame.add(menu, BorderLayout.NORTH);
         frame.add(gridPanel, BorderLayout.CENTER);
         return frame;
@@ -80,24 +98,40 @@ public class Visualization {
         }
     }
 
+    public static void backBtnHit() {
+        if (!visualized.isEmpty()) {
+            bfsPath = undoTile(bfsPath);
+        }
+    }
     public static ArrayList<int[]> viewNextTile(ArrayList<int[]> path) {
         int[] pair = path.remove(0);
+        visualized.add(pair);
         int row = pair[0];
         int column = pair[1];
 
         GridTile tile = tileGrid[row][column];
-        tile.setVisited(stepNum);
+        tile.setVisited(true, stepNum);
         stepNum++;
 
         return path;
     }
+    
+    public static ArrayList<int[]> undoTile(ArrayList<int[]> path) {
+        int[] pair = visualized.remove(visualized.size()-1);
+        int row = pair[0];
+        int column = pair[1];
 
-    // helper function to convert int[][] to ArrayList<int[]>
-    public static ArrayList<int[]> addAll(int[][] toAdd) {
-        ArrayList<int[]> list = new ArrayList<int[]>();
-        for (int i = 0; i < toAdd.length; i++) {
-            list.add(toAdd[i]);
+        GridTile tile = tileGrid[row][column];
+        tile.setVisited(false, stepNum);
+        stepNum--;
+
+        ArrayList<int[]> newPath = new ArrayList<int[]>();
+        newPath.add(pair);
+
+        for (int i=0; i < path.size(); i++) {
+            newPath.add(path.get(i));
         }
-        return list;
+
+        return newPath;
     }
 }

@@ -32,8 +32,9 @@ public class GridTile extends JButton implements MouseListener {
     //     g.fillRect(0, 0, getSize().width - 8, getSize().height - 8);
     // }
 
-    public void setVisited(int stepNum) {
-        setText("" + stepNum);
+    public void setVisited(boolean visited, int stepNum) {
+        if (visited) setText("" + stepNum);
+        else setText("");
     }
 
     public void mouseClicked(MouseEvent e) {}

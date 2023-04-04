@@ -5,11 +5,15 @@ import java.awt.event.*;
 
 // original code inspiration: https://github.com/kdeloach/labs/blob/master/java/yahtzee/src/Dice.java
 public class StepButton extends JButton implements MouseListener {
-
-    public StepButton(String text, Dimension dimension) {
-        super(text);
-        this.setPreferredSize(dimension);
-        enableInputMethods(true);   
+    private boolean forward;
+    public StepButton(Dimension dimension, boolean forward) {
+        super();
+        this.forward = forward;
+        if (forward) setText("Step");
+        else setText("Backstep");
+        this.forward = forward;
+        
+        this.setPreferredSize(dimension); 
         addMouseListener(this);
     }
 
@@ -27,6 +31,7 @@ public class StepButton extends JButton implements MouseListener {
     }
     public void mouseReleased(MouseEvent e)
     {
-        RoadBuilder.nextBtnHit();
+        if (forward) Visualization.nextBtnHit();
+        else Visualization.backBtnHit();
     }
 }

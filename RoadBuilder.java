@@ -26,7 +26,7 @@ public class RoadBuilder extends Grid {
         Grid grid = new Grid(gridRows, gridColumns, obstacles, goal, start);
         //Grid grid = new Grid(gridRows, gridColumns);
         
-        new Visualization(grid, bfsPath, obstacles);
+        new Visualization(grid, bfsPath, obstacles, tileWidth, tileHeight);
 
     }
 
