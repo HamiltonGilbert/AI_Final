@@ -103,14 +103,15 @@ public class Grid {
         private int weight; //TODO how is weight determined?
         private boolean on_path;
 
-        private boolean is_obstacle;
+        private boolean isGoal;
+        private boolean isObstacle;
 
         public Tile(int row, int column, boolean is_goal, boolean is_obstacle) {
             this.row = row;
             this.column = column;
             this.on_path = false;
             this.weight = 0;
-            this.is_obstacle = is_obstacle;
+            this.isObstacle = is_obstacle;
             
         }
 
@@ -121,21 +122,21 @@ public class Grid {
             return column;
         }
 
-        public int[][] getIndex() {
-            return null;
-            // TODO (ask Korinne)
+        public int[] getIndex() {
+            int[] index = {this.row, this.column};
+            return index;
         }
 
         public boolean isGoal() {
-            return isGoal();
+            return isGoal;
         }
         
         public boolean isObstacle() {
-            return this.is_obstacle;
+            return this.isObstacle;
         }
 
         public void setObstacle(boolean b) {
-            this.is_obstacle = b;
+            this.isObstacle = b;
         }
 
         public void set_path(boolean on_path){
