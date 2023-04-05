@@ -12,11 +12,11 @@ public class Pathfinder extends Grid {
     private static Tile start;
     private static Tile goal;
 
-    public Pathfinder(Grid newGrid) {
-        grid = newGrid;
-        // start = 
-        // start = newStart;
-        // goal = newGoal;
+    public Pathfinder(Grid unsolvedGrid) {
+        grid = unsolvedGrid;
+        start = grid.getStartTile();
+        goal = grid.getGoal();
+
     }
     // bfs
     public static void bfs_pathfinding() { //will return int[][] path
@@ -60,9 +60,7 @@ public class Pathfinder extends Grid {
         }
     }
 
-    //NOTES FROM KENNA:
-    // Changed grid.getRow() to grid.getRows()  same for grid.getColumns()
-
+   
     // A*  
     public static void aStar_pathfinding() {
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // array of direction vectors

@@ -88,6 +88,14 @@ public class Grid {
         return this.columns;
     }
 
+    public Tile getStartTile() {
+        return this.start;
+    }
+
+    public Tile getGoalTile() {
+        return this.goal;
+    }
+
     public Tile getTile(int row, int column) {
         return gridTiles[row][column];
     }
