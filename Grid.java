@@ -6,6 +6,7 @@ public class Grid {
 
     private int[] startCoords;
     private int[][] obstacles;
+    private int[][] keyTiles;
     private Tile[][] gridTiles;
     private Tile goal;
     private int[] goalCoords;
@@ -14,10 +15,11 @@ public class Grid {
     // private Tile[][] gridTiles;
     // private Tile goal;
 
-    public Grid(int rows, int columns, int[][] obstacleLocations, int[] goalCoords, int[] startCoords) {
+    public Grid(int rows, int columns, int[][] obstacles, int[][] keyTiles, int[] goalCoords, int[] startCoords) {
         this.rows  = rows;
         this.columns = columns;
-        this.obstacles = obstacleLocations;
+        this.obstacles = obstacles;
+        this.keyTiles = keyTiles;
         this.goalCoords = goalCoords;
         this.startCoords = startCoords;
         init_grid();
@@ -62,6 +64,13 @@ public class Grid {
             gridTiles[row][column].setObstacle(true);
         }
 
+        // add keyTiles
+        for (int i = 0; i < keyTiles.length; i++) {
+            int row = keyTiles[i][0];
+            int column = keyTiles[i][1];
+            gridTiles[row][column].setKeyTile(true);
+        }
+
         // add goal
         goal = gridTiles[goalCoords[0]][goalCoords[1]];
         //goal.setGoal(true);
@@ -82,7 +91,7 @@ public class Grid {
     public Tile getTile(int row, int column) {
         return gridTiles[row][column];
     }
-
+    
     public Tile[][] getGridTiles() {
         return gridTiles;
     }
@@ -109,6 +118,7 @@ public class Grid {
 
         private boolean isGoal;
         private boolean isObstacle;
+        private boolean isKeyTile;
 
         public Tile(int row, int column, boolean is_goal, boolean is_obstacle) {
             this.row = row;
@@ -141,6 +151,14 @@ public class Grid {
 
         public void setObstacle(boolean b) {
             this.isObstacle = b;
+        }
+
+        public void setKeyTile(boolean b) {
+            this.isKeyTile = b;
+        }
+
+        public boolean isKeyTile() {
+            return this.isKeyTile;
         }
 
         public void set_path(boolean on_path){
