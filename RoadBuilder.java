@@ -12,13 +12,15 @@ public class RoadBuilder extends Grid {
 
         // choose tiles to be obstacles
         int[][] obstacles = {{2, 2}, {3, 1}, {3, 0}, {1, 5}, {3, 3}, {3, 4}};
-        //ArrayList<int[]> obstaclesList = addAll(obstacles);
+
+        // choose tiles to be keyTiles
+        int[][] keyTiles = {{2, 0}, {3, 0}};
 
         // temp path until using algorithm
         int[][] path = {{0, 0}, {0, 1}, {1, 0}, {1, 1}, {1, 2}, {2, 1}};
         ArrayList<int[]> bfsPath = addAll(path);
 
-        Grid grid = new Grid(gridRows, gridColumns, obstacles, goal, start);
+        Grid grid = new Grid(gridRows, gridColumns, obstacles, keyTiles, goal, start);
         //Grid grid = new Grid(gridRows, gridColumns);
         
         Visualization vis = new Visualization(grid, tileWidth, tileHeight);
