@@ -38,12 +38,12 @@ public class Pathfinder extends Grid {
             if (current == goal) {
                 // reconstruct path and mark it on the grid
                 while (current != start) {
-                    grid.getTile(current.getRow(), current.getColumn()).set_path(true); // mark tile as part of path
+                    grid.getTile(current.getRow(), current.getColumn()).setOnPath(true); // mark tile as part of path
                     // current = grid.getTile(parent[current.getRow()][current.getColumn()]); // get parent tile
 
                     current = grid.getTile(current.getRow(), current.getColumn());
                 }
-                grid.getTile(start.getRow(), start.getColumn()).set_path(true); // mark starting tile as part of path
+                grid.getTile(start.getRow(), start.getColumn()).setOnPath(true); // mark starting tile as part of path
                 return;
             }
             
@@ -81,10 +81,10 @@ public class Pathfinder extends Grid {
             if (current == goal) {
                 // reconstruct path and mark it on the grid
                 while (current != start) {
-                    grid.getTile(current.getRow(), current.getColumn()).set_path(true); // mark tile as part of path
+                    grid.getTile(current.getRow(), current.getColumn()).setOnPath(true); // mark tile as part of path
                     // FIX current = grid.getTile(parent[current.getRow()][current.getColumn()]); // get parent tile
                 }
-                grid.getTile(start.getRow(), start.getColumn()).set_path(true); // mark starting tile as part of path
+                grid.getTile(start.getRow(), start.getColumn()).setOnPath(true); // mark starting tile as part of path
                 return;
             }
             visited[current.getRow()][current.getColumn()] = true;
@@ -128,10 +128,10 @@ public class Pathfinder extends Grid {
             if (current == goal) {
                 // reconstruct path and mark it on the grid
                 while (current != start) {
-                    grid.getTile(current.getRow(), current.getColumn()).set_path(true); // mark tile as part of path
+                    grid.getTile(current.getRow(), current.getColumn()).setOnPath(true); // mark tile as part of path
                     // FIX current = grid.getTile(parent[current.getRow()][current.getColumn()]); // get parent tile
                 }
-                grid.getTile(start.getRow(), start.getColumn()).set_path(true); // mark starting tile as part of path
+                grid.getTile(start.getRow(), start.getColumn()).setOnPath(true); // mark starting tile as part of path
                 return;
             }
             if (visited[current.getRow()][current.getColumn()]) {

@@ -116,31 +116,30 @@ public class Grid {
         private int column;
         private int weight; //TODO how is weight determined?
         private boolean on_path;
-
         private boolean is_goal;
         private boolean is_obstacle;
         private boolean is_key_tile;
 
-        public Tile(int row, int column, boolean is_goal, boolean is_obstacle) { //TODO eventually add weight as param
+        public Tile(int row, int column, boolean is_goal, boolean is_obstacle, int weight) { //TODO eventually add weight as param
             this.row = row;
             this.column = column;
-            this.on_path = false;
-            this.weight = 0;
             this.is_goal = is_goal;
             this.is_obstacle = is_obstacle;
+            this.on_path = false;
+            this.weight = weight;
+            
+        }
+
+        public Tile(int row, int column, boolean is_goal, boolean is_obstacle) {
+            this.row = row;
+            this.column = column;
+            this.is_obstacle = is_obstacle;
+            this.on_path = false;
+            this.weight = 0;
             
         }
 
         public Tile(int row, int column, boolean is_goal) {
-            this.row = row;
-            this.column = column;
-            this.on_path = false;
-            this.weight = 0;
-            this.is_obstacle = false;
-            
-        }
-
-        public Tile(int row, int column) {
             this.row = row;
             this.column = column;
             this.on_path = false;
@@ -181,7 +180,11 @@ public class Grid {
             return this.is_key_tile;
         }
 
-        public void set_path(boolean on_path){
+        public boolean getOnPath() {
+            return this.on_path;
+        }
+
+        public void setOnPath(boolean on_path){
             this.on_path = on_path;
         }
 
