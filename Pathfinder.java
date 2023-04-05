@@ -21,17 +21,39 @@ public class Pathfinder extends Grid {
 
     //new bfs
     public static void bfs_pathfinding() {
-        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // array of direction vectors
+        // int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // array of direction vectors
         ArrayList<Tile> visited = new ArrayList<>();
         ArrayList<Tile> queue = new ArrayList<>();
         Tile currentTile = start;
+        Tile[] neighbors = new Tile[4];
+
         queue.add(currentTile);
         
-        while ((currentTile.getRow() != start.getRow()) && (currentTile.getColumn() != start.getColumn()) ) {
-            
-            
-            
-            
+        while (!queue.isEmpty()) {
+            neighbors = grid.getNeighbors(currentTile);
+            for (int i = 0; i < neighbors.length; i ++){
+                
+                if (!visited.contains(neighbors[i])){
+                    for (int j = 0; j < neighbors.length; j++){
+                        neighbors[i].setParent(currentTile);
+                        queue.add(neighbors[i]);
+
+                    }
+                }
+
+                Tile[] childNeighbors = grid.getNeighbors(neighbors[i]);    //the neighbors of the child Node of currentTile
+                if (!visited.contains(childNeighbors[i])){
+                    for (int j = 0; j < childNeighbors.length; j++){
+                        childNeighbors[i].setParent(neighbors[i]);
+                        queue.add(neighbors[i]);
+                    }
+                }
+            }
+            if (currentTile.equals(goal)){ //If the goal has been found
+                // return "FOUND IT";
+            }
+            visited.add(currentTile);
+            currentTile = queue.remove(0);
             
             System.out.println("still searching");
         }
