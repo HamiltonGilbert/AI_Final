@@ -76,8 +76,17 @@ public class Grid {
         //goal.setGoal(true);
     }
 
-    public static Tile[] neighbors() {
-        return null;
+    public Tile[] getNeighbors(Tile nucleus) {
+
+        Tile[] neighbors = new Tile[4];
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+        for (int i = 0; i < 4; i++) {
+            if (gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]] != null) {
+                neighbors[i] = gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]];
+            }
+        }
+        return neighbors;
     }
 
     public int getRows() {
@@ -127,8 +136,9 @@ public class Grid {
         private boolean is_goal;
         private boolean is_obstacle;
         private boolean is_key_tile;
+        private Tile parent;
 
-        public Tile(int row, int column, boolean is_goal, boolean is_obstacle, int weight) { //TODO eventually add weight as param
+        public Tile(int row, int column, boolean is_goal, boolean is_obstacle, int weight) { //TODO eventually add weight as param and parent?
             this.row = row;
             this.column = column;
             this.is_goal = is_goal;
@@ -194,6 +204,14 @@ public class Grid {
 
         public void setOnPath(boolean on_path){
             this.on_path = on_path;
+        }
+
+        public void setParent(Tile parent) {
+            this.parent = parent;
+        }
+
+        public Tile getParent() {
+            return this.parent;
         }
 
         public int weight() {
