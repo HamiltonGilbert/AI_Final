@@ -82,7 +82,7 @@ public class Grid {
     public Tile getTile(int row, int column) {
         return gridTiles[row][column];
     }
-    
+
     public Tile[][] getGridTiles() {
         return gridTiles;
     }
@@ -109,7 +109,6 @@ public class Grid {
 
         private boolean isGoal;
         private boolean isObstacle;
-        private boolean isKeyTile;
 
         public Tile(int row, int column, boolean is_goal, boolean is_obstacle) {
             this.row = row;
@@ -142,14 +141,6 @@ public class Grid {
 
         public void setObstacle(boolean b) {
             this.isObstacle = b;
-        }
-
-        public void setKeyTile(boolean b) {
-            this.isKeyTile = b;
-        }
-
-        public boolean isKeyTile() {
-            return this.isKeyTile;
         }
 
         public void set_path(boolean on_path){
