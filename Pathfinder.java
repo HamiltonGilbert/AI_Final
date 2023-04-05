@@ -12,21 +12,24 @@ public class Pathfinder extends Grid {
     private static Tile start;
     private static Tile goal;
 
-    public Pathfinder(Grid newGrid, Tile newStart, Tile newGoal) {
+    public Pathfinder(Grid newGrid) {
         grid = newGrid;
-        start = newStart;
-        goal = newGoal;
+        // start = 
+        // start = newStart;
+        // goal = newGoal;
     }
     // bfs
-    public static void bfs_pathfinding() {
+    public static void bfs_pathfinding() { //will return int[][] path
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // array of direction vectors
         int m = grid.getRows(); // number of rows
         int n = grid.getColumns(); // number of columns
-        int[][] parent = new int[m][n]; // array to keep track of the parent of each visited node
-        boolean[][] visited = new boolean[m][n]; // array to keep track of visited nodes
+        // int[][] parent = new int[m][n]; // array to keep track of the parent of each visited node
+        // boolean[][] visited = new boolean[m][n]; // array to keep track of visited nodes
+        ArrayList<Tile> visited = new ArrayList<>();
         ArrayList<Tile> queue = new ArrayList<>(); // ArrayList to hold nodes to be processed
         queue.add(start); // add starting tile to queue
-        visited[start.getRow()][start.getColumn()] = true; // mark starting tile as visited
+        // visited[start.getRow()][start.getColumn()] = true; // mark starting tile as visited
+        // visited.add()
         int index = 0; // index of the current node being processed
         
         while (index < queue.size()) {
@@ -48,11 +51,11 @@ public class Pathfinder extends Grid {
                 int nx = current.getRow() + dir[0];
                 int ny = current.getColumn() + dir[1];
                 Tile neighbor = grid.getTile(nx, ny);
-                if (neighbor != null && neighbor.weight() == 1 && !visited[nx][ny]) {
-                    queue.add(neighbor);
-                    visited[nx][ny] = true;
+                // if (neighbor != null && neighbor.weight() == 1 && !visited[nx][ny]) {
+                //     queue.add(neighbor);
+                //     visited[nx][ny] = true;
                     // FIX parent[nx][ny] = current.getIndex();
-                }
+                // }
             }
         }
     }

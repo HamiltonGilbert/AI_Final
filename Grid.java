@@ -72,7 +72,7 @@ public class Grid {
         }
 
         // add goal
-        goal = gridTiles[goalCoords[0]][goalCoords[1]];
+        this.goal = gridTiles[goalCoords[0]][goalCoords[1]];
         //goal.setGoal(true);
     }
 
@@ -96,9 +96,10 @@ public class Grid {
         return gridTiles;
     }
 
-    public void setGoal(Tile goal) {
-        this.goal = goal;
+    public void setGoal(int[] goalCoords) {
+        this.goal = new Tile(goalCoords[0], goalCoords[1], true);
     }
+
 
     public Tile getGoal() {
         return this.goal;
@@ -116,16 +117,35 @@ public class Grid {
         private int weight; //TODO how is weight determined?
         private boolean on_path;
 
-        private boolean isGoal;
-        private boolean isObstacle;
-        private boolean isKeyTile;
+        private boolean is_goal;
+        private boolean is_obstacle;
+        private boolean is_key_tile;
 
-        public Tile(int row, int column, boolean is_goal, boolean is_obstacle) {
+        public Tile(int row, int column, boolean is_goal, boolean is_obstacle) { //TODO eventually add weight as param
             this.row = row;
             this.column = column;
             this.on_path = false;
             this.weight = 0;
-            this.isObstacle = is_obstacle;
+            this.is_goal = is_goal;
+            this.is_obstacle = is_obstacle;
+            
+        }
+
+        public Tile(int row, int column, boolean is_goal) {
+            this.row = row;
+            this.column = column;
+            this.on_path = false;
+            this.weight = 0;
+            this.is_obstacle = false;
+            
+        }
+
+        public Tile(int row, int column) {
+            this.row = row;
+            this.column = column;
+            this.on_path = false;
+            this.weight = 0;
+            this.is_obstacle = false;
             
         }
 
@@ -142,23 +162,23 @@ public class Grid {
         }
 
         public boolean isGoal() {
-            return isGoal;
+            return this.is_goal;
         }
         
         public boolean isObstacle() {
-            return this.isObstacle;
+            return this.is_obstacle;
         }
 
         public void setObstacle(boolean b) {
-            this.isObstacle = b;
+            this.is_obstacle = b;
         }
 
         public void setKeyTile(boolean b) {
-            this.isKeyTile = b;
+            this.is_key_tile = b;
         }
 
         public boolean isKeyTile() {
-            return this.isKeyTile;
+            return this.is_key_tile;
         }
 
         public void set_path(boolean on_path){
