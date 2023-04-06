@@ -19,30 +19,36 @@ public class Pathfinder extends Grid {
         ArrayList<Tile> visited = new ArrayList<>();
         ArrayList<Tile> queue = new ArrayList<>();
         Tile currentTile = start;
-        Tile[] neighbors = new Tile[4];
+        // Tile[] neighbors = new Tile[4];
 
         queue.add(currentTile);
         currentTile.setParent(null);
         
         while (!queue.isEmpty()) {
-            neighbors = grid.getNeighbors(currentTile);
+            Tile[] neighbors = grid.getNeighbors(currentTile);
+            System.out.println("hi");
             for (int i = 0; i < neighbors.length; i ++){
                 
                 if (!visited.contains(neighbors[i])){
                     for (int j = 0; j < neighbors.length; j++){
-                        neighbors[i].setParent(currentTile);
-                        queue.add(neighbors[i]);
-
+                        if (neighbors[i] != null) {
+                            neighbors[i].setParent(currentTile);
+                            queue.add(neighbors[i]);
+                        }
                     }
                 }
-
-                Tile[] childNeighbors = grid.getNeighbors(neighbors[i]);    //the neighbors of the child Node of currentTile
-                if (!visited.contains(childNeighbors[i])){
-                    for (int j = 0; j < childNeighbors.length; j++){
-                        childNeighbors[i].setParent(neighbors[i]);
-                        queue.add(neighbors[i]);
+                if (neighbors[i] != null) {
+                    Tile[] childNeighbors = grid.getNeighbors(neighbors[i]);    //the neighbors of the child Node of currentTile
+                    if (!visited.contains(childNeighbors[i])){
+                        for (int j = 0; j < childNeighbors.length; j++){
+                            if (childNeighbors[i] != null) {
+                                childNeighbors[i].setParent(neighbors[i]);
+                                queue.add(neighbors[i]);
+                            }   
+                        }
                     }
                 }
+                
             }
             if (currentTile.equals(goal)){ //If the goal has been found
                 System.out.println("FOUND IT");
@@ -114,7 +120,7 @@ public class Pathfinder extends Grid {
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // array of direction vectors
         int m = grid.getRows(); // number of rows
         int n = grid.getColumns(); // number of columns
-        int[][] parent = new int[m][n]; // array to keep track of the parent of each visited node
+        // int[][] parent = new int[m][n]; // array to keep track of the parent of each visited node
         double[][] gScore = new double[m][n]; // array to keep track of the cost to get to each node
         double[][] fScore = new double[m][n]; // array to keep track of the total estimated cost to reach the goal through each node
         boolean[][] visited = new boolean[m][n]; // array to keep track of visited nodes

@@ -79,16 +79,19 @@ public class Grid {
 
     public Tile[] getNeighbors(Tile nucleus) {
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-        Tile[] neighbors = new Tile[directions.length];
+        Tile[] neighbors = new Tile[4];
 
-        for (int i = 0; i < directions.length; i++) {
-            if ((nucleus.row + directions[i][0] < 0 || nucleus.row + directions[i][0] > rows) || (nucleus.column + directions[0][i] < 0 || nucleus.column + directions[0][i] > columns)){
-                if (gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]] != null) { //testing to make sure the tile has values
-                    neighbors[i] = gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]];
+        for (int i = 0; i < 4; i++) {
+            if ((nucleus.row + directions[i][0] < 0 || nucleus.row + directions[i][0] > rows) || 
+                (nucleus.column + directions[i][1] < 0 || nucleus.column + directions[i][1] > columns)) {
+                    continue;
+                } else {
+                    if (gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]] != null) { //testing to make sure the tile has values
+                        neighbors[i] = gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]];
+                    }
                 }
-            }
-            
-        }
+                
+            } 
         return neighbors;
     }
 
