@@ -54,13 +54,17 @@ public class Pathfinder extends Grid {
                         }
                     }
                 }
-                if (currentTile.equals(goal)){ //If the goal has been found
+                if (currentTile.equals(goal)) { //If the goal has been found
                     System.out.println("FOUND IT");
                     Tile onThePath = currentTile;
-                    while (true) {
+                    
+                    while ((onThePath.getRow() != start.getRow()) && (onThePath.getColumn() != start.getColumn())) {
+                        // System.out.print("(" + onThePath.getRow() + ", " + onThePath.getColumn() + ") ");
                         path.add(onThePath);
+                        onThePath.setOnPath(true);
                         onThePath = onThePath.getParent();
                     }
+                    return path;
                     // break;
                 }
             
