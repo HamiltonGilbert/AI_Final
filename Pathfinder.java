@@ -18,54 +18,69 @@ public class Pathfinder extends Grid {
         // int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // array of direction vectors
         ArrayList<Tile> visited = new ArrayList<>();
         ArrayList<Tile> queue = new ArrayList<>();
+        ArrayList<Tile> path = new ArrayList<>();
         Tile currentTile = start;
+        
         // Tile[] neighbors = new Tile[4];
 
         queue.add(currentTile);
         currentTile.setParent(null);
         
         while (!queue.isEmpty()) {
-            Tile[] neighbors = grid.getNeighbors(currentTile);
-            System.out.println("hi");
-            for (int i = 0; i < neighbors.length; i ++){
-                
-                if (!visited.contains(neighbors[i])){
-                    for (int j = 0; j < neighbors.length; j++){
-                        if (neighbors[i] != null) {
-                            neighbors[i].setParent(currentTile);
-                            queue.add(neighbors[i]);
-                        }
-                    }
-                }
-                if (neighbors[i] != null) {
-                    Tile[] childNeighbors = grid.getNeighbors(neighbors[i]);    //the neighbors of the child Node of currentTile
-                    if (!visited.contains(childNeighbors[i])){
-                        for (int j = 0; j < childNeighbors.length; j++){
-                            if (childNeighbors[i] != null) {
-                                childNeighbors[i].setParent(neighbors[i]);
+            if (!visited.contains(currentTile)) {
+                System.out.println("Current Tile: (" + currentTile.getRow() + "," + currentTile.getColumn() + ")");
+            
+                Tile[] neighbors = grid.getNeighbors(currentTile);
+                System.out.println("queue is not empty");
+                for (int i = 0; i < neighbors.length; i ++){
+                    
+                    if (!visited.contains(neighbors[i])){
+                        // for (int j = 0; j < neighbors.length; j++){
+                            if (neighbors[i] != null) {
+                                neighbors[i].setParent(currentTile);
                                 queue.add(neighbors[i]);
-                            }   
+                            }
+                        // }
+                    }
+                    if (neighbors[i] != null) {
+                        Tile[] childNeighbors = grid.getNeighbors(neighbors[i]);    //the neighbors of the child Node of currentTile
+                        for (int j = 0; j < childNeighbors.length; j++){
+                            if (!visited.contains(childNeighbors[j])){
+                                if (childNeighbors[j] != null) {
+                                    childNeighbors[j].setParent(neighbors[i]);
+                                    queue.add(childNeighbors[j]);
+                                }   
+                            }
                         }
                     }
                 }
-                
+                if (currentTile.equals(goal)){ //If the goal has been found
+                    System.out.println("FOUND IT");
+                    Tile onThePath = currentTile;
+                    while (true) {
+                        path.add(onThePath);
+                        onThePath = onThePath.getParent();
+                    }
+                    // break;
+                }
+            
+                visited.add(currentTile);
             }
-            if (currentTile.equals(goal)){ //If the goal has been found
-                System.out.println("FOUND IT");
-            }
-            visited.add(currentTile);
             currentTile = queue.remove(0);
             
             System.out.println("still searching");
         }
 
-        // recunstruct path
-        ArrayList<Tile> path = new ArrayList<Tile>();
-        Tile currentParent = goal;
-        while (currentParent != null) {
-            path.add(currentParent);
-        }
+        System.out.print("The goal was never found");
         return path;
+
+        // recunstruct path
+        // ArrayList<Tile> path = new ArrayList<Tile>();
+        // Tile currentParent = goal;
+        // while (currentParent != null) {
+        //     path.add(currentParent);
+        // }
+        // return path;
     }
 
 
