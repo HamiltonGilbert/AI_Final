@@ -9,6 +9,7 @@ public class VisibleTile extends JButton implements MouseListener {
     private ImageIcon tileImage = new ImageIcon("Images/Tile.png");
     private ImageIcon obstacleImage = new ImageIcon("Images/Obstacle.png");
     private ImageIcon goalImage = new ImageIcon("Images/Goal.png");
+    private ImageIcon keyTileImage = new ImageIcon("Images/KeyTile.png");
     private Dimension dimension;
     private String text = "";
 
@@ -30,6 +31,11 @@ public class VisibleTile extends JButton implements MouseListener {
 
     public void setObstacle() {
         setIcon(resizeImage(obstacleImage));
+        setFont(new Font("Arial", Font.PLAIN, dimension.height/3));
+    }
+
+    public void setKeyTile() {
+        setIcon(resizeImage(keyTileImage));
         setFont(new Font("Arial", Font.PLAIN, dimension.height/3));
     }
 

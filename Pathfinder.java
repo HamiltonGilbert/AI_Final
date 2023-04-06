@@ -1,26 +1,20 @@
-import java.util.HashSet;
 import java.util.PriorityQueue;
-import java.util.Set;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 
-// TODO: line 54, 82, 95, 129, 146
-
 public class Pathfinder extends Grid {
-    private static Grid grid;
-    private static Tile start;
-    private static Tile goal;
+    private Grid grid;
+    private Tile start;
+    private Tile goal;
 
     public Pathfinder(Grid unsolvedGrid) {
         grid = unsolvedGrid;
         start = grid.getStartTile();
         goal = grid.getGoal();
-
     }
 
     //new bfs
-    public static void bfs_pathfinding() {
+    public ArrayList<Tile> bfs_pathfinding() {
         // int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // array of direction vectors
         ArrayList<Tile> visited = new ArrayList<>();
         ArrayList<Tile> queue = new ArrayList<>();
@@ -28,6 +22,7 @@ public class Pathfinder extends Grid {
         Tile[] neighbors = new Tile[4];
 
         queue.add(currentTile);
+        currentTile.setParent(null);
         
         while (!queue.isEmpty()) {
             neighbors = grid.getNeighbors(currentTile);
@@ -50,13 +45,21 @@ public class Pathfinder extends Grid {
                 }
             }
             if (currentTile.equals(goal)){ //If the goal has been found
-                // return "FOUND IT";
+                System.out.println("FOUND IT");
             }
             visited.add(currentTile);
             currentTile = queue.remove(0);
             
             System.out.println("still searching");
         }
+
+        // recunstruct path
+        ArrayList<Tile> path = new ArrayList<Tile>();
+        Tile currentParent = goal;
+        while (currentParent != null) {
+            path.add(currentParent);
+        }
+        return path;
     }
 
 
@@ -107,7 +110,7 @@ public class Pathfinder extends Grid {
     // }
 
     // A*  
-    public static void aStar_pathfinding() {
+    public void aStar_pathfinding() {
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // array of direction vectors
         int m = grid.getRows(); // number of rows
         int n = grid.getColumns(); // number of columns
@@ -151,12 +154,12 @@ public class Pathfinder extends Grid {
     }
 
     // heuristic function (manhattan distance)
-    private static double heuristic(Tile tile1, Tile tile2) {
+    private double heuristic(Tile tile1, Tile tile2) {
         return Math.abs(tile1.getRow() - tile2.getRow()) + Math.abs(tile1.getColumn() - tile2.getColumn());
     }
     
      // Dijkstra's algorithm
-    public static void dijkstra_pathfinding() {
+    public void dijkstra_pathfinding() {
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // array of direction vectors
         int m = grid.getRows(); // number of rows
         int n = grid.getColumns(); // number of columns

@@ -25,28 +25,27 @@ public class Grid {
         init_grid();
     }
 
-    public Grid(int rows, int columns, int[][] obstacleLocations) {
-        this.rows  = rows;
-        this.columns = columns;
-        this.obstacles = obstacleLocations;
-        // this.goal = null;
-        init_grid();
-    }
+    // public Grid(int rows, int columns, int[][] obstacleLocations) {
+    //     this.rows  = rows;
+    //     this.columns = columns;
+    //     this.obstacles = obstacleLocations;
+    //     // this.goal = null;
+    //     init_grid();
+    // }
 
-    public Grid(int rows, int columns) {
-        this.rows  = rows;
-        this.columns = columns;
-        //this.obstacleLocations;
-        // this.goal = null;
-        init_grid();
-    }
+    // public Grid(int rows, int columns) {
+    //     this.rows  = rows;
+    //     this.columns = columns;
+    //     //this.obstacleLocations;
+    //     // this.goal = null;
+    //     init_grid();
+    // }
 
     public Grid() {
         this.rows = 0;
         this.columns = 0;
         //this.obstacleLocations;
         // this.goal = null;
-        init_grid();
     }
 
     private void init_grid() {
@@ -73,15 +72,16 @@ public class Grid {
 
         // add goal
         this.goal = gridTiles[goalCoords[0]][goalCoords[1]];
+        // add start
+        this.start = gridTiles[startCoords[0]][startCoords[1]];
         //goal.setGoal(true);
     }
 
     public Tile[] getNeighbors(Tile nucleus) {
-
-        Tile[] neighbors = new Tile[4];
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        Tile[] neighbors = new Tile[directions.length];
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < directions.length; i++) {
             if ((nucleus.row + directions[i][0] < 0 || nucleus.row + directions[i][0] > rows) || (nucleus.column + directions[0][i] < 0 || nucleus.column + directions[0][i] > columns)){
                 if (gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]] != null) { //testing to make sure the tile has values
                     neighbors[i] = gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]];

@@ -5,9 +5,11 @@ import java.awt.event.*;
 
 // original code inspiration: https://github.com/kdeloach/labs/blob/master/java/yahtzee/src/Dice.java
 public class StepButton extends JButton implements MouseListener {
+    private Visualization visualization;
     private boolean forward;
-    public StepButton(Dimension dimension, boolean forward) {
+    public StepButton(Visualization vis, Dimension dimension, boolean forward) {
         super();
+        visualization = vis;
         this.forward = forward;
         if (forward) setText("Step");
         else setText("Backstep");
@@ -31,7 +33,7 @@ public class StepButton extends JButton implements MouseListener {
     }
     public void mouseReleased(MouseEvent e)
     {
-        if (forward) Visualization.nextBtnHit();
-        else Visualization.backBtnHit();
+        if (forward) visualization.nextBtnHit();
+        else visualization.backBtnHit();
     }
 }

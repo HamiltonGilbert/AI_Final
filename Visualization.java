@@ -4,59 +4,54 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
-public class Visualization {
-    private static Grid grid;
+public class Visualization extends Grid {
+    private Grid grid;
     // temp holder of what step the visualization is on
-    private static int stepNum = 0;
-    // holds paths
-    // MAKE PRIVATE ONCE PATHFINDER WORKS
-    public static ArrayList<int[]> bfsPath;
-    private static ArrayList<int[]> DjikstraPath;
-    private static ArrayList<int[]> AStarPath;
+    private int stepNum = 0;
     // holds grid of visible tiles
-    private static VisibleTile[][] tileGrid;
+    private VisibleTile[][] tileGrid;
     // tile dimensions
-    private static int tileWidth;
-    private static int tileHeight;
+    private int tileWidth;
+    private int tileHeight;
+    // path to follow
+    private ArrayList<Tile> path;
     // visited visible tiles
-    private static ArrayList<int[]> visualized;
+    private ArrayList<Tile> visualized;
 
-    public Visualization(Grid newGrid, int width, int height) {
-        grid = newGrid;
+    public Visualization(Grid grid, ArrayList<Tile> path, int width, int height) {
+        this.grid = grid;
+        this.path = path;
         tileWidth = width;
         tileHeight = height;
-        visualized = new ArrayList<int[]>();
         visualize();
     }
-    static void visualize() {
-        int rows = grid.getRows();
-        int columns = grid.getColumns();
-
-        JFrame frame = newFrame();
+    private void visualize() {
+        visualized = new ArrayList<Tile>();
+        JFrame frame = newFrame(path);
         frame.setVisible(true);
     }
     
     // creates new frame
-    public static JFrame newFrame() {
+    private JFrame newFrame(ArrayList<Tile> path) {
         BorderLayout frameLayout = new BorderLayout(0, 0);
-        GridLayout gridLayout = new GridLayout(grid.getRows(), grid.getColumns());
+        GridLayout gridLayout = new GridLayout(this.grid.getRows(), this.grid.getColumns());
         BorderLayout menuLayout = new BorderLayout(0, -7);
-        gridLayout.setVgap(2);
-        gridLayout.setHgap(2);
+        gridLayout.setVgap(1);
+        gridLayout.setHgap(1);
 
         JFrame frame = new JFrame();
         frame.setTitle("Pathfinding Visualization");
         frame.setLayout(frameLayout);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(new Dimension(grid.getColumns() * tileWidth, (grid.getRows() + 1) * tileHeight));
+        frame.setSize(new Dimension(this.grid.getColumns() * tileWidth, (this.grid.getRows() + 1) * tileHeight));
         
         JPanel menu = new JPanel();
         menu.setLayout(menuLayout);
         menu.setSize(tileWidth, tileHeight);
         // JPanel buttons = new JPanel();
         // buttons.setLayout(new BorderLayout());
-        StepButton step = new StepButton(new Dimension(tileWidth, tileHeight/2), true);
-        StepButton backStep = new StepButton(new Dimension(tileWidth, tileHeight/2), false);
+        StepButton step = new StepButton(this, new Dimension(tileWidth, tileHeight/2), true);
+        StepButton backStep = new StepButton(this, new Dimension(tileWidth, tileHeight/2), false);
         step.setPreferredSize(new Dimension(tileWidth, tileHeight/2));
         backStep.setPreferredSize(new Dimension(tileWidth, tileHeight/2));
         // buttons.add(step, BorderLayout.SOUTH);
@@ -65,23 +60,25 @@ public class Visualization {
         menu.add(step, BorderLayout.NORTH);
         menu.add(backStep, BorderLayout.SOUTH);
         JPanel blankSpace = new JPanel();
-        blankSpace.setSize(new Dimension(grid.getColumns() * tileWidth/2, tileHeight));
+        blankSpace.setSize(new Dimension(this.grid.getColumns() * tileWidth/2, tileHeight));
         menu.add(new JPanel(), BorderLayout.EAST);
 
         JPanel gridPanel = new JPanel();
         gridPanel.setLayout(gridLayout);
-        gridPanel.setPreferredSize(new Dimension(grid.getColumns() * tileWidth, grid.getRows() * tileHeight));
+        gridPanel.setPreferredSize(new Dimension(this.grid.getColumns() * tileWidth, this.grid.getRows() * tileHeight));
 
         // add tiles to grid
-        tileGrid = new VisibleTile[grid.getRows()][grid.getColumns()];
-        for (int i = 0; i < grid.getRows(); i++) {
-            for (int j = 0; j < grid.getColumns(); j++) {
+        tileGrid = new VisibleTile[this.grid.getRows()][this.grid.getColumns()];
+        for (int i = 0; i < this.grid.getRows(); i++) {
+            for (int j = 0; j < this.grid.getColumns(); j++) {
                 VisibleTile tile = new VisibleTile(new Dimension(tileWidth, tileHeight));
                 
                 // check if obstacle
-                if (grid.getTile(i, j).isObstacle()) {tile.setObstacle();}
+                if (this.grid.getTile(i, j).isObstacle()) {tile.setObstacle();}
+                // check if keyTile
+                if (this.grid.getTile(i, j).isKeyTile()) {tile.setKeyTile();}
                 // check if goal
-                if (grid.getTile(i, j).isGoal()) {tile.setGoal();}
+                if (this.grid.getTile(i, j).isGoal()) {tile.setGoal();}
                 //add to GridPanel
                 tileGrid[i][j] = tile;
                 gridPanel.add(tile);
@@ -89,55 +86,56 @@ public class Visualization {
         }
         
         // set obstacles
-        for (int i = 0; i < grid.getObstacles().length; i++) {
-            int row = grid.getObstacles()[i][0];
-            int column = grid.getObstacles()[i][1];
+        for (int i = 0; i < this.grid.getObstacles().length; i++) {
+            int row = this.grid.getObstacles()[i][0];
+            int column = this.grid.getObstacles()[i][1];
             tileGrid[row][column].setObstacle();
         }
 
         //set goal
-        tileGrid[grid.getGoal().getRow()][grid.getGoal().getColumn()].setGoal();
+        tileGrid[this.grid.getGoal().getRow()][this.grid.getGoal().getColumn()].setGoal();
 
         frame.add(menu, BorderLayout.NORTH);
         frame.add(gridPanel, BorderLayout.CENTER);
+        frame.setResizable(false);
         return frame;
     }
 
-    public static void nextBtnHit() {
-        if (!bfsPath.isEmpty()) {
-            bfsPath = viewNextTile(bfsPath);
+    public void nextBtnHit() {
+        if (!path.isEmpty()) {
+            path = viewNextTile(path);
         }
     }
 
-    public static void backBtnHit() {
+    public void backBtnHit() {
         if (!visualized.isEmpty()) {
-            bfsPath = undoTile(bfsPath);
+            path = undoTile(path);
         }
     }
-    public static ArrayList<int[]> viewNextTile(ArrayList<int[]> path) {
-        int[] pair = path.remove(0);
-        visualized.add(pair);
-        int row = pair[0];
-        int column = pair[1];
+    private ArrayList<Tile> viewNextTile(ArrayList<Tile> path) {
+        Tile tile = path.remove(0);
+        visualized.add(tile);
+        int row = tile.getRow();
+        int column = tile.getColumn();
 
-        VisibleTile tile = tileGrid[row][column];
-        tile.setVisited(true, stepNum);
+        VisibleTile visibleTile = tileGrid[row][column];
+        visibleTile.setVisited(true, stepNum);
         stepNum++;
 
         return path;
     }
     
-    public static ArrayList<int[]> undoTile(ArrayList<int[]> path) {
-        int[] pair = visualized.remove(visualized.size()-1);
-        int row = pair[0];
-        int column = pair[1];
+    private ArrayList<Tile> undoTile(ArrayList<Tile> path) {
+        Tile tile = visualized.remove(visualized.size()-1);
+        int row = tile.getRow();
+        int column = tile.getColumn();
 
-        VisibleTile tile = tileGrid[row][column];
-        tile.setVisited(false, stepNum);
+        VisibleTile visibleTile = tileGrid[row][column];
+        visibleTile.setVisited(false, stepNum);
         stepNum--;
 
-        ArrayList<int[]> newPath = new ArrayList<int[]>();
-        newPath.add(pair);
+        ArrayList<Tile> newPath = new ArrayList<Tile>();
+        newPath.add(tile);
 
         for (int i=0; i < path.size(); i++) {
             newPath.add(path.get(i));
