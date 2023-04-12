@@ -66,7 +66,7 @@ public class Pathfinder extends Grid {
                             break;
                         }
                        
-                        path.add(onThePath);
+                        path.add(0, onThePath);
                         onThePath.setOnPath(true);
                         if (onThePath.getParent() != null) {
                             onThePath = onThePath.getParent();
