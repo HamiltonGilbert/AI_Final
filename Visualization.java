@@ -35,7 +35,7 @@ public class Visualization extends Grid {
     private JFrame newFrame(ArrayList<Tile> path) {
         BorderLayout frameLayout = new BorderLayout(0, 0);
         GridLayout gridLayout = new GridLayout(this.grid.getRows(), this.grid.getColumns());
-        BorderLayout menuLayout = new BorderLayout(0, -7);
+        BorderLayout menuLayout = new BorderLayout(0, -10);
         gridLayout.setVgap(1);
         gridLayout.setHgap(1);
 
@@ -43,7 +43,7 @@ public class Visualization extends Grid {
         frame.setTitle("Pathfinding Visualization");
         frame.setLayout(frameLayout);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(new Dimension(this.grid.getColumns() * tileWidth, (this.grid.getRows() + 1) * tileHeight));
+        frame.setSize(new Dimension(this.grid.getColumns() * tileWidth, (this.grid.getRows() + 1) * tileHeight + 10));
         
         JPanel menu = new JPanel();
         menu.setLayout(menuLayout);
