@@ -97,8 +97,7 @@ public class Pathfinder extends Grid {
     public ArrayList<Tile> dijkstra_pathfinding() {
 
         ArrayList<Tile> path = new ArrayList<>();
-        
-        PriorityQueue<Tile> queue = new PriorityQueue<Tile>(new DistanceComparator()); // priority queue to hold unvisited Tiles
+        PriorityQueue<Tile> queue = new PriorityQueue<Tile>(new WeightComparator()); // priority queue to hold unvisited Tiles
         ArrayList<Tile> visited = new ArrayList<>();
 
         Tile currentTile = start;
