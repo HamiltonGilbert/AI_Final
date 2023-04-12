@@ -27,52 +27,64 @@ public class Pathfinder extends Grid {
         currentTile.setParent(null);
         
         while (!queue.isEmpty()) {
-            if (!visited.contains(currentTile)) {
+            if ((!visited.contains(currentTile)) && (!currentTile.isObstacle())) {
                 System.out.println("Current Tile: (" + currentTile.getRow() + "," + currentTile.getColumn() + ")");
             
                 Tile[] neighbors = grid.getNeighbors(currentTile);
-                System.out.println("queue is not empty");
+                // System.out.println("queue is not empty");
+
                 for (int i = 0; i < neighbors.length; i ++){
-                    
-                    if (!visited.contains(neighbors[i])){
-                        // for (int j = 0; j < neighbors.length; j++){
-                            if (neighbors[i] != null) {
-                                neighbors[i].setParent(currentTile);
-                                queue.add(neighbors[i]);
-                            }
-                        // }
-                    }
-                    if (neighbors[i] != null) {
-                        Tile[] childNeighbors = grid.getNeighbors(neighbors[i]);    //the neighbors of the child Node of currentTile
-                        for (int j = 0; j < childNeighbors.length; j++){
-                            if (!visited.contains(childNeighbors[j])){
-                                if (childNeighbors[j] != null) {
-                                    childNeighbors[j].setParent(neighbors[i]);
-                                    queue.add(childNeighbors[j]);
-                                }   
+                    if ((neighbors[i] != null) && !(neighbors[i].isObstacle())) {
+                        if ((!visited.contains(neighbors[i]))){
+                        
+                            neighbors[i].setParent(currentTile);
+                            System.out.println("adding (" + currentTile.getRow() + "," + currentTile.getColumn() + ") to the queue");
+                            queue.add(neighbors[i]);
+                        }
+                        if (neighbors[i] != null) {
+                            Tile[] childNeighbors = grid.getNeighbors(neighbors[i]);    //the neighbors of the child Node of currentTile
+                            for (int j = 0; j < childNeighbors.length; j++){
+                                if (!visited.contains(childNeighbors[j]) && (!queue.contains(childNeighbors[j]))){
+                                    
+                                    if ((childNeighbors[j] != null) && !(childNeighbors[j].isObstacle())) {
+                                        childNeighbors[j].setParent(neighbors[i]);
+                                        queue.add(childNeighbors[j]);
+                                    }   
+                                }
                             }
                         }
                     }
+                    
                 }
                 if (currentTile.equals(goal)) { //If the goal has been found
                     System.out.println("FOUND IT");
+
                     Tile onThePath = currentTile;
                     
                     while ((onThePath.getRow() != start.getRow()) && (onThePath.getColumn() != start.getColumn())) {
+                        if (path.contains(onThePath)) {
+                            break;
+                        }
+                        System.out.println("Adding (" + onThePath.getRow() + ", " + onThePath.getColumn() + ") to the path");
                         // System.out.print("(" + onThePath.getRow() + ", " + onThePath.getColumn() + ") ");
                         path.add(onThePath);
                         onThePath.setOnPath(true);
-                        onThePath = onThePath.getParent();
+                        if (onThePath.getParent() != null) {
+                            onThePath = onThePath.getParent();
+                        } else {
+                            System.out.println(path);
+                            return path;
+                        }
+                    
                     }
-                    return path;
-                    // break;
+                    
                 }
             
                 visited.add(currentTile);
             }
             currentTile = queue.remove(0);
             
-            System.out.println("still searching");
+            // System.out.println("still searching");
         }
 
         System.out.print("The goal was never found");
