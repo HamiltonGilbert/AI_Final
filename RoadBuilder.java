@@ -22,7 +22,8 @@ public class RoadBuilder {
         Pathfinder pathfinder = new Pathfinder(grid);
 
         // visualize bfs
-        new Visualization(grid, pathfinder.bfs_pathfinding(), tileWidth, tileHeight);
+        // new Visualization(grid, pathfinder.bfs_pathfinding(), tileWidth, tileHeight);
+        new Visualization(grid, pathfinder.dijkstra_pathfinding(), tileWidth, tileHeight);
         // // visualize dijkstra
         // vis.visualize(pathfinder.dijkstra_pathfinding());
         // // visualize a*
