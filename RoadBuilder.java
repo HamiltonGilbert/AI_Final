@@ -24,9 +24,10 @@ public class RoadBuilder {
         // visualize bfs
         // new Visualization(grid, pathfinder.bfs_pathfinding(), tileWidth, tileHeight);
         new Visualization(grid, pathfinder.dijkstra_pathfinding(), tileWidth, tileHeight);
+
         // // visualize dijkstra
         // vis.visualize(pathfinder.dijkstra_pathfinding());
         // // visualize a*
-        // vis.visualize(pathfinder.aStar_pathfinding());
+        // new Visualization(grid, pathfinder.aStar_pathfinding(), tileWidth, tileHeight);
     }
 }
