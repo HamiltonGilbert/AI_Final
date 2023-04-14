@@ -11,10 +11,6 @@ public class Grid {
     private Tile goal;
     private int[] goalCoords;
 
-    // private ArrayList<ArrayList<Integer>> obstacleLocations;
-    // private Tile[][] gridTiles;
-    // private Tile goal;
-
     public Grid(int rows, int columns, int[][] obstacles, int[][] keyTiles, int[] goalCoords, int[] startCoords) {
         this.rows  = rows;
         this.columns = columns;
@@ -138,7 +134,8 @@ public class Grid {
 
         private int row;
         private int column;
-        private int weight; //TODO how is weight determined?
+        private int weight;
+        private int path_weight;
         private boolean on_path;
         private boolean is_goal;
         private boolean is_obstacle;
@@ -152,6 +149,7 @@ public class Grid {
             this.is_obstacle = is_obstacle;
             this.on_path = false;
             this.weight = weight;
+            this.path_weight = 0;
             
         }
 
@@ -160,7 +158,8 @@ public class Grid {
             this.column = column;
             this.is_obstacle = is_obstacle;
             this.on_path = false;
-            this.weight = 0;
+            this.weight = 1;
+            this.path_weight = 0;
             
         }
 
@@ -168,8 +167,9 @@ public class Grid {
             this.row = row;
             this.column = column;
             this.on_path = false;
-            this.weight = 0;
+            this.weight = 1;
             this.is_obstacle = false;
+            this.path_weight = 0;
             
         }
 
@@ -223,6 +223,14 @@ public class Grid {
 
         public int weight() {
             return this.weight;
+        }
+
+        public void setPathWeight(int path_weight){
+            this.path_weight = path_weight;
+        }
+
+        public int getPathWeight() {
+            return this.path_weight;
         }
         
     }
