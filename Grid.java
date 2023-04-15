@@ -164,6 +164,10 @@ public class Grid {
         return this.keyTiles;
     }
 
+    public Tile getStart() {
+        return this.start;
+    }
+
 
     public class Tile {
 
