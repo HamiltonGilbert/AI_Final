@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Grid {
     // private static Tile start;
     private int rows;
@@ -21,27 +23,56 @@ public class Grid {
         init_grid();
     }
 
-    // public Grid(int rows, int columns, int[][] obstacleLocations) {
-    //     this.rows  = rows;
-    //     this.columns = columns;
-    //     this.obstacles = obstacleLocations;
-    //     // this.goal = null;
-    //     init_grid();
-    // }
+    public Grid(int rows, int columns, int numObstacles, int numKeyTiles) {
+        this.rows  = rows;
+        this.columns = columns;
+        this.obstacles = randomize_tiles(rows, columns, numObstacles);
 
-    // public Grid(int rows, int columns) {
-    //     this.rows  = rows;
-    //     this.columns = columns;
-    //     //this.obstacleLocations;
-    //     // this.goal = null;
-    //     init_grid();
-    // }
+        Boolean check = false;
+        do {
+            check = check_obstructions(rows, columns, this.obstacles);
+            if (!check) {
+                this.obstacles = randomize_tiles(rows, columns, numObstacles);
+            }
+        } while(!check);
+
+        this.keyTiles = randomize_tiles(rows, columns, numKeyTiles);
+        init_grid();
+    }
+
+    public Grid(int rows, int columns) { //randomize num obstacles and num key tiles according to given metric
+        this.rows  = rows;
+        this.columns = columns;
+        init_grid();
+    }
 
     public Grid() {
         this.rows = 0;
         this.columns = 0;
         //this.obstacleLocations;
         // this.goal = null;
+    }
+
+    private int[][] randomize_tiles(int rows, int columns, int numTiles) {
+        int[][] random_tiles = new int[numTiles][numTiles];
+        Random x_rand = new Random(rows);
+        Random y_rand = new Random(columns);
+
+        for (int i = 0; i < numTiles; i++) {
+            random_tiles[i][0] = x_rand.nextInt(rows);
+            random_tiles[i][1] = y_rand.nextInt(rows);
+        }
+        return random_tiles;
+
+    }
+
+    private Boolean check_obstructions(int rows, int columns, int[][] current_obstacles) {
+        // int[][] random_tiles = new int[numTiles][numTiles];
+        for (int i = 0; i < current_obstacles.length; i++) {
+            
+        }
+
+        return true;
     }
 
     private void init_grid() {
