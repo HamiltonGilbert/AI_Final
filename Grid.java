@@ -160,6 +160,10 @@ public class Grid {
         return this.obstacles;
     }
 
+    public int[][] getKeyTiles() {
+        return this.keyTiles;
+    }
+
 
     public class Tile {
 
