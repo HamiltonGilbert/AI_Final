@@ -9,7 +9,7 @@ public class StepButton extends JButton implements MouseListener {
     private boolean forward;
     public StepButton(Visualization vis, Dimension dimension, boolean forward) {
         super();
-        visualization = vis;
+        this.visualization = vis;
         this.forward = forward;
         if (forward) setText("Step");
         else setText("Backstep");
