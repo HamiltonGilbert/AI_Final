@@ -1,11 +1,9 @@
 import java.util.Random;
 
 public class Grid {
-    // private static Tile start;
     private int rows;
     private int columns;
     private Tile start;
-
     private int[] startCoords;
     private int[][] obstacles;
     private int[][] keyTiles;
