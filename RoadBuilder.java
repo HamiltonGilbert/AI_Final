@@ -1,10 +1,10 @@
 public class RoadBuilder {
     public static void main(String[] args) {
         // set variables
-        int tileHeight = 100;
-        int tileWidth = 100;
-        int gridRows1 = 4;
-        int gridColumns1 = 6;
+        int tileHeight = 10;
+        int tileWidth = 10;
+        int gridRows1 = 60;
+        int gridColumns1 = 30;
         int gridRows2 = 5;
         int gridColumns2 = 8;
 
@@ -16,7 +16,7 @@ public class RoadBuilder {
         int[] start3 = {1, 1};
 
         // choose tiles to be obstacles
-        int[][] obstacles1 = {{2, 1}, {2, 3}, {3, 2}, {3, 3}, {5, 4}, {5, 3}};
+        int[][] obstacles1 = {{2, 1}, {2, 3}, {5, 4}, {5, 3}};
         int[][] obstacles2 = {{2, 1}, {5, 4}, {5, 3}, {3, 3}, {1, 3}, {3, 2}, {5, 2}};
         int[][] obstacles3 = {{2, 1}, {5, 2}, {3, 3}, {3, 4}, {5, 3}};
 
@@ -30,7 +30,7 @@ public class RoadBuilder {
         Grid grid3 = new Grid(gridRows2, gridColumns2, makeCoords(obstacles3), makeCoords(keyTiles3), makeCoords(goal3), makeCoords(start3));
 
         // visualize
-        new Visualization("BFS", grid1, tileWidth, tileHeight);
+        new Visualization("Dijkstras", grid1, tileWidth, tileHeight);
         // new Visualization("Djikstra", grid1, pathfinder1.dijkstra_pathfinding(), tileWidth, tileHeight);
         // new Visualization(grid2, pathfinder2.bfs_pathfinding(), tileWidth, tileHeight);
         // new Visualization("A*", grid3, pathfinder3.aStar_pathfinding(), tileWidth, tileHeight);
