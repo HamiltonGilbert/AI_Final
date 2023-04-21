@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Grid {
@@ -21,22 +22,24 @@ public class Grid {
         init_grid();
     }
 
-    public Grid(int rows, int columns, int numObstacles, int numKeyTiles) {
-        this.rows  = rows;
-        this.columns = columns;
-        this.obstacles = randomize_tiles(rows, columns, numObstacles);
+   
 
-        Boolean check = false;
-        do {
-            check = check_obstructions(rows, columns, this.obstacles);
-            if (!check) {
-                this.obstacles = randomize_tiles(rows, columns, numObstacles);
-            }
-        } while(!check);
+    // public Grid(int rows, int columns, int numObstacles, int numKeyTiles) {
+    //     this.rows  = rows;
+    //     this.columns = columns;
+    //     this.obstacles = randomize_tiles(rows, columns, numObstacles);
 
-        this.keyTiles = randomize_tiles(rows, columns, numKeyTiles);
-        init_grid();
-    }
+    //     Boolean check = false;
+    //     do {
+    //         check = check_obstructions(rows, columns, this.obstacles);
+    //         if (!check) {
+    //             this.obstacles = randomize_tiles(rows, columns, numObstacles);
+    //         }
+    //     } while(!check);
+
+    //     this.keyTiles = randomize_tiles(rows, columns, numKeyTiles);
+    //     init_grid();
+    // }
 
     public Grid(int rows, int columns) { //randomize num obstacles and num key tiles according to given metric
         this.rows  = rows;
@@ -51,27 +54,27 @@ public class Grid {
         // this.goal = null;
     }
 
-    private int[][] randomize_tiles(int rows, int columns, int numTiles) {
-        int[][] random_tiles = new int[numTiles][numTiles];
-        Random x_rand = new Random(rows);
-        Random y_rand = new Random(columns);
+    // private int[][] randomize_tiles(int rows, int columns, int numTiles) {
+    //     int[][] random_tiles = new int[numTiles][numTiles];
+    //     Random x_rand = new Random(rows);
+    //     Random y_rand = new Random(columns);
 
-        for (int i = 0; i < numTiles; i++) {
-            random_tiles[i][0] = x_rand.nextInt(rows);
-            random_tiles[i][1] = y_rand.nextInt(rows);
-        }
-        return random_tiles;
+    //     for (int i = 0; i < numTiles; i++) {
+    //         random_tiles[i][0] = x_rand.nextInt(rows);
+    //         random_tiles[i][1] = y_rand.nextInt(rows);
+    //     }
+    //     return random_tiles;
 
-    }
+    // }
 
-    private Boolean check_obstructions(int rows, int columns, int[][] current_obstacles) {
-        // int[][] random_tiles = new int[numTiles][numTiles];
-        for (int i = 0; i < current_obstacles.length; i++) {
+    // private Boolean check_obstructions(int rows, int columns, int[][] current_obstacles) {
+    //     // int[][] random_tiles = new int[numTiles][numTiles];
+    //     for (int i = 0; i < current_obstacles.length; i++) {
             
-        }
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
     private void init_grid() {
         gridTiles = new Tile[getRows()][getColumns()];
@@ -112,14 +115,21 @@ public class Grid {
                     if ((gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]] != null)) { //testing to make sure the tile has values
                     // if ((gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]] != null) && (!gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]].isObstacle())) { //testing to make sure the tile has values
                         neighbors[i] = gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]];
-                        // if (neighbors[i].isObstacle()) {
-                        //     System.out.println("Tile (" + neighbors[i].getRow() + "," + neighbors[i].getColumn() + ")");
-                        // }
+
                     }
             }
                 
         } 
         return neighbors;
+    }
+
+    public ArrayList<Tile> getKeyTilesArray(){
+        ArrayList<Tile> keyTilesArray = new ArrayList<Tile>();
+
+        for (int i = 0; i < this.keyTiles.length; i++) {
+            keyTilesArray.add(gridTiles[this.keyTiles[i][0]][this.keyTiles[i][1]]);
+        }
+        return keyTilesArray;
     }
 
     public int getRows() {
