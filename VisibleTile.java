@@ -21,7 +21,7 @@ public class VisibleTile extends JButton implements MouseListener {
         this.dimension = dimension;
         setIcon(resizeImage(tileImage));
         setFont(new Font("Arial", Font.PLAIN, dimension.height/3));
-        setPreferredSize(dimension);   
+        setPreferredSize(dimension);
         addMouseListener(this);
     }
 
@@ -47,17 +47,25 @@ public class VisibleTile extends JButton implements MouseListener {
         setFont(new Font("Arial", Font.PLAIN, dimension.height/3));
     }
 
+    public void setRegularTile() {
+        setIcon(resizeImage(tileImage));
+        setFont(new Font("Arial", Font.PLAIN, dimension.height/3));
+    }
+
     public void setVisited(boolean visited, int stepNum) {
         if (visited) this.text = "" + stepNum;
         else this.text = "";
         repaint();
     }
 
-    public void mouseClicked(MouseEvent e) {visualization.tileClicked(this.coords);}
-    public void mouseEntered(MouseEvent e) {setCursor(new Cursor(Cursor.HAND_CURSOR));}
+public void mouseClicked(MouseEvent e) {/*visualization.tileClicked(this.coords);*/}
+    public void mouseEntered(MouseEvent e) {
+        setCursor(new Cursor(Cursor.HAND_CURSOR));
+        visualization.mouseOver(coords);
+    }
     public void mouseExited(MouseEvent e) {setCursor(new Cursor(Cursor.DEFAULT_CURSOR));}
-    public void mousePressed(MouseEvent e) {}
-    public void mouseReleased(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) {visualization.mouseDown(coords);}
+    public void mouseReleased(MouseEvent e) {visualization.mouseDown();}
 
     public ImageIcon resizeImage(ImageIcon imageIcon) {
         Image image = imageIcon.getImage(); // transform it 

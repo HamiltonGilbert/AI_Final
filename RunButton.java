@@ -4,16 +4,12 @@ import java.awt.event.*;
 
 
 // original code inspiration: https://github.com/kdeloach/labs/blob/master/java/yahtzee/src/Dice.java
-public class SetTileButton extends JButton implements MouseListener {
+public class RunButton extends JButton implements MouseListener {
     private Visualization visualization;
-    private String tile;
-    public SetTileButton(Visualization vis, Dimension dimension, String tile) {
+    public RunButton(Visualization vis, Dimension dimension) {
         super();
         this.visualization = vis;
-        this.tile = tile;
-        if (this.tile != "Erase") {setText("Set " + this.tile);}
-        else {setText(this.tile);}
-        
+        setText("Run");
         this.setPreferredSize(dimension); 
         addMouseListener(this);
     }
@@ -23,12 +19,15 @@ public class SetTileButton extends JButton implements MouseListener {
 
     // }
 
-    public void mouseClicked(MouseEvent e)
-    {
-        this.visualization.newSetTiles(tile);
-    }
+    public void mouseClicked(MouseEvent e){}
     public void mouseEntered(MouseEvent e) {setCursor(new Cursor(Cursor.HAND_CURSOR));}
     public void mouseExited(MouseEvent e) {setCursor(new Cursor(Cursor.DEFAULT_CURSOR));}
-    public void mousePressed(MouseEvent e) {}
-    public void mouseReleased(MouseEvent e) {}
+    public void mousePressed(MouseEvent e)
+    {
+
+    }
+    public void mouseReleased(MouseEvent e)
+    {
+        visualization.runBtnHit();
+    }
 }
