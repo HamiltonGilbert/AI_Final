@@ -109,7 +109,8 @@ public class Grid {
         for (int i = 0; i < 4; i++) {
             if (!((nucleus.row + directions[i][0] < 0 || nucleus.row + directions[i][0] > rows-1) || 
                 (nucleus.column + directions[i][1] < 0 || nucleus.column + directions[i][1] > columns-1))) {
-                    if ((gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]] != null) && (!gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]].isObstacle())) { //testing to make sure the tile has values
+                    if ((gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]] != null)) { //testing to make sure the tile has values
+                    // if ((gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]] != null) && (!gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]].isObstacle())) { //testing to make sure the tile has values
                         neighbors[i] = gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]];
                         // if (neighbors[i].isObstacle()) {
                         //     System.out.println("Tile (" + neighbors[i].getRow() + "," + neighbors[i].getColumn() + ")");
@@ -231,10 +232,12 @@ public class Grid {
         }
 
         public void setObstacle(boolean b) {
+            this.weight = 10;
             this.is_obstacle = b;
         }
 
         public void setKeyTile(boolean b) {
+            this.weight = -100;
             this.is_key_tile = b;
         }
 
