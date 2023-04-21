@@ -20,68 +20,80 @@ public class Pathfinder extends Grid {
         ArrayList<Tile> queue = new ArrayList<>();
         ArrayList<Tile> path = new ArrayList<>();
         Tile currentTile = start;
+        int keyTileIndex = grid.getKeyTilesArray().size()-1;
         
 
         queue.add(currentTile);
         currentTile.setParent(null);
         
-        while (!queue.isEmpty()) {
-            if ((!visited.contains(currentTile))) {
-                if (currentTile.equals(goal)) { //If the goal has been found
-                    System.out.println("FOUND IT");
-
-                    Tile onThePath = currentTile;
-                    System.out.println("(" + onThePath.getRow() + "," + onThePath.getColumn() + ")");
-                    while (true) {
-                        if (path.contains(onThePath)) {
-                            break;
-                        }
-                       
-                        path.add(0, onThePath);
-                        onThePath.setOnPath(true);
-                        if (onThePath.getParent() != null) {
-                            onThePath = onThePath.getParent();
-                        } 
-                    }
-                    return path;
-                } else {
-
-                    System.out.println("Current Tile: (" + currentTile.getRow() + "," + currentTile.getColumn() + ")");
-                
-                    Tile[] neighbors = grid.getNeighbors(currentTile);
-                    // System.out.println("queue is not empty");
-
-                    for (int i = 0; i < neighbors.length; i ++){
-                        if ((neighbors[i] != null) && (!visited.contains(neighbors[i]))) {
-                            if (neighbors[i].getParent() == null){
-                                neighbors[i].setParent(currentTile);
+        while (keyTileIndex>=0) {
+            while (!queue.isEmpty()) {
+                if ((!visited.contains(currentTile))) {
+                    if (currentTile.equals(grid.getKeyTilesArray().get(grid.getKeyTilesArray().size()-1))) { //If the goal has been found  //TODO needs to change to keyTile
+                        System.out.println("FOUND IT");
+    
+                        Tile onThePath = currentTile;
+                        System.out.println("(" + onThePath.getRow() + "," + onThePath.getColumn() + ")");
+                        while (true) {
+                            if (path.contains(onThePath)) {
+                                break;
                             }
-                            
-                            // System.out.println("adding (" + currentTile.getRow() + "," + currentTile.getColumn() + ") to the queue");
-                            queue.add(neighbors[i]);
-
-                            Tile[] childNeighbors = grid.getNeighbors(neighbors[i]);    //the neighbors of the child Node of currentTile
-
-                            for (int j = 0; j < childNeighbors.length; j++) {
-                                if ((childNeighbors[j] != null) && (!visited.contains(childNeighbors[j])) && (!queue.contains(childNeighbors[j]))) {
-                                    if (childNeighbors[j].getParent() == null) {
-                                        childNeighbors[j].setParent(neighbors[i]);
+                           
+                            path.add(0, onThePath);
+                            onThePath.setOnPath(true);
+                            if (onThePath.getParent() != null) {
+                                onThePath = onThePath.getParent();
+                            } 
+                        }
+                        // if (keyTileIndex == grid.getKeyTilesArray().size()-1) {
+                            return path;
+                        // }
+                        
+                    } else if (currentTile.equals(grid.getKeyTilesArray().get(keyTileIndex))) { //keyTile has been found
+                        queue.clear();
+                        visited.clear();
+                        queue.add(currentTile);
+                        keyTileIndex -= 1;
+                    } 
+    
+                        System.out.println("Current Tile: (" + currentTile.getRow() + "," + currentTile.getColumn() + ")");
+                    
+                        Tile[] neighbors = grid.getNeighbors(currentTile);
+                        // System.out.println("queue is not empty");
+    
+                        for (int i = 0; i < neighbors.length; i ++){
+                            if ((neighbors[i] != null) && (!visited.contains(neighbors[i]))) {
+                                if (neighbors[i].getParent() == null){
+                                    neighbors[i].setParent(currentTile);
+                                }
+                                
+                                // System.out.println("adding (" + currentTile.getRow() + "," + currentTile.getColumn() + ") to the queue");
+                                queue.add(neighbors[i]);
+    
+                                Tile[] childNeighbors = grid.getNeighbors(neighbors[i]);    //the neighbors of the child Node of currentTile
+    
+                                for (int j = 0; j < childNeighbors.length; j++) {
+                                    if ((childNeighbors[j] != null) && (!visited.contains(childNeighbors[j])) && (!queue.contains(childNeighbors[j]))) {
+                                        if (childNeighbors[j].getParent() == null) {
+                                            childNeighbors[j].setParent(neighbors[i]);
+                                        }
+                                        
+                                        System.out.println("(" + childNeighbors[j].getRow() + "," + childNeighbors[j].getColumn() + ")\'s parent is (" + neighbors[i].getRow() + "," + neighbors[i].getColumn() + ")");
+                                        queue.add(childNeighbors[j]);
                                     }
-                                    
-                                    System.out.println("(" + childNeighbors[j].getRow() + "," + childNeighbors[j].getColumn() + ")\'s parent is (" + neighbors[i].getRow() + "," + neighbors[i].getColumn() + ")");
-                                    queue.add(childNeighbors[j]);
                                 }
                             }
                         }
-                    }
+                    
+                    //goal used to be here
+                
+                    visited.add(currentTile);
                 }
-                //goal used to be here
-            
-                visited.add(currentTile);
+                currentTile = queue.remove(0);
+                
             }
-            currentTile = queue.remove(0);
-            
         }
+        
 
         System.out.println("The goal was never found");
         System.out.println(path);
