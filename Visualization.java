@@ -93,8 +93,9 @@ public class Visualization extends Grid {
 
     public void newSetTiles(String tileName) {
         // if we already have that as our setTiles, make it null instead
-        if (setTiles == tileName) {this.setTiles = null;}
-        else {this.setTiles = tileName;}
+        // if (setTiles == tileName) {this.setTiles = null;}
+        // else {this.setTiles = tileName;}
+        this.setTiles = tileName;
     }
 
     // public void tileClicked(int[] coords) {

@@ -23,12 +23,9 @@ public class SetTileButton extends JButton implements MouseListener {
 
     // }
 
-    public void mouseClicked(MouseEvent e)
-    {
-        this.visualization.newSetTiles(tile);
-    }
+    public void mouseClicked(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {setCursor(new Cursor(Cursor.HAND_CURSOR));}
     public void mouseExited(MouseEvent e) {setCursor(new Cursor(Cursor.DEFAULT_CURSOR));}
-    public void mousePressed(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) {this.visualization.newSetTiles(tile);}
     public void mouseReleased(MouseEvent e) {}
 }
