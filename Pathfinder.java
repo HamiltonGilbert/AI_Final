@@ -58,7 +58,7 @@ public class Pathfinder extends Grid {
     
                         System.out.println("Current Tile: (" + currentTile.getRow() + "," + currentTile.getColumn() + ")");
                     
-                        Tile[] neighbors = grid.getNeighbors(currentTile);
+                        Tile[] neighbors = grid.getNeighborsBFS(currentTile);
                         // System.out.println("queue is not empty");
     
                         for (int i = 0; i < neighbors.length; i ++){
@@ -70,7 +70,7 @@ public class Pathfinder extends Grid {
                                 // System.out.println("adding (" + currentTile.getRow() + "," + currentTile.getColumn() + ") to the queue");
                                 queue.add(neighbors[i]);
     
-                                Tile[] childNeighbors = grid.getNeighbors(neighbors[i]);    //the neighbors of the child Node of currentTile
+                                Tile[] childNeighbors = grid.getNeighborsBFS(neighbors[i]);    //the neighbors of the child Node of currentTile
     
                                 for (int j = 0; j < childNeighbors.length; j++) {
                                     if ((childNeighbors[j] != null) && (!visited.contains(childNeighbors[j])) && (!queue.contains(childNeighbors[j]))) {

@@ -22,6 +22,16 @@ public class Grid {
         init_grid();
     }
 
+    public Grid(int rows, int columns, int[][] obstacles, int[][] keyTiles, int[] startCoords) {
+        this.rows  = rows;
+        this.columns = columns;
+        this.obstacles = obstacles;
+        this.keyTiles = keyTiles;
+        // this.goalCoords = goalCoords;
+        this.startCoords = startCoords;
+        init_grid();
+    }
+
    
 
     // public Grid(int rows, int columns, int numObstacles, int numKeyTiles) {
@@ -114,6 +124,24 @@ public class Grid {
                 (nucleus.column + directions[i][1] < 0 || nucleus.column + directions[i][1] > columns-1))) {
                     if ((gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]] != null)) { //testing to make sure the tile has values
                     // if ((gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]] != null) && (!gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]].isObstacle())) { //testing to make sure the tile has values
+                        neighbors[i] = gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]];
+
+                    }
+            }
+                
+        } 
+        return neighbors;
+    }
+
+    public Tile[] getNeighborsBFS(Tile nucleus) {
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        Tile[] neighbors = new Tile[4];
+
+        for (int i = 0; i < 4; i++) {
+            if (!((nucleus.row + directions[i][0] < 0 || nucleus.row + directions[i][0] > rows-1) || 
+                (nucleus.column + directions[i][1] < 0 || nucleus.column + directions[i][1] > columns-1))) {
+                    // if ((gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]] != null)) { //testing to make sure the tile has values
+                    if ((gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]] != null) && (!gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]].isObstacle())) { //testing to make sure the tile has values
                         neighbors[i] = gridTiles[nucleus.row + directions[i][0]][nucleus.column + directions[i][1]];
 
                     }
