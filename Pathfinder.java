@@ -1,5 +1,6 @@
 import java.util.PriorityQueue;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
 
@@ -22,15 +23,13 @@ public class Pathfinder extends Grid {
         Tile currentTile = start;
         int keyTileIndex = grid.getKeyTilesArray().size()-1;
 
-        
-
         queue.add(currentTile);
         currentTile.setParent(null);
         
         while (keyTileIndex>=0) {
             while (!queue.isEmpty()) {
                 if ((!visited.contains(currentTile))) {
-                    if (currentTile.equals(grid.getKeyTilesArray().get(keyTileIndex))) { //If the goal has been found  //TODO needs to change to keyTile
+                    if (currentTile.equals(grid.getKeyTilesArray().get(keyTileIndex))) { //If the goal has been found 
                         System.out.println("FOUND IT");
     
                         Tile onThePath = currentTile;
@@ -56,15 +55,6 @@ public class Pathfinder extends Grid {
                             // continue;
                         }
                     }
-                    // } else if (currentTile.equals(grid.getKeyTilesArray().get(keyTileIndex))) { //keyTile has been found
-                    //     System.out.println("FOUND IT");
-                    //     System.out.println("(" + currentTile.getRow() + "," + currentTile.getColumn() + ")");
-                    //     queue.clear();
-                    //     visited.clear();
-                    //     queue.add(currentTile);
-                    //     keyTileIndex += 1;
-                    // } 
-    
                         // System.out.println("Current Tile: (" + currentTile.getRow() + "," + currentTile.getColumn() + ")");
                     
                         Tile[] neighbors = grid.getNeighborsBFS(currentTile);
@@ -119,7 +109,11 @@ public class Pathfinder extends Grid {
     public ArrayList<Tile> dijkstra_pathfinding() {
         int m = grid.getRows(); // number of rows
         int n = grid.getColumns(); // number of columns
-        
+        ArrayList<Tile> keyTilesArray = grid.getKeyTilesArray();
+        Collections.sort(keyTilesArray, new PathWeightComparator());
+
+        int keyTileIndex = keyTilesArray.size()-1;
+
         ArrayList<Tile> path = new ArrayList<>();
         PriorityQueue<Tile> queue = new PriorityQueue<Tile>(new PathWeightComparator()); // priority queue to hold unvisited Tiles
         ArrayList<Tile> visited = new ArrayList<>();
@@ -134,63 +128,74 @@ public class Pathfinder extends Grid {
         }
         grid.getTile(0,0).setPathWeight(0);
 
-        while (!queue.isEmpty()) { 
-            if (currentTile.equals(goal)) { //If the goal has been found
-                System.out.println("FOUND IT");
+        while (keyTileIndex>=0) {
+            while (!queue.isEmpty()) { 
+                if (currentTile.equals(keyTilesArray.get(keyTileIndex))) { //If the goal has been found
+                    System.out.println("FOUND IT");
 
-                Tile onThePath = currentTile;
-                System.out.println("(" + onThePath.getRow() + "," + onThePath.getColumn() + ")");
-                System.out.println("The total path cost is " + goal.getPathWeight());
-                
-                while (true) {
-                    if (path.contains(onThePath)) {
-                        break;
-                    }
-                   
-                    path.add(0, onThePath);
-                    onThePath.setOnPath(true);
-                    if (onThePath.getParent() != null) {
-                        onThePath = onThePath.getParent();
-                    } 
-                }
-                return path;
-            }
-            
-            Tile[] neighbors = grid.getNeighbors(currentTile);
-            System.out.println("the current tile is (" + currentTile.getRow() + "," + currentTile.getColumn() + ")");
-
-
-            for (int i = 0; i < 4; i ++) {
-                if (neighbors[i] != null) {
+                    Tile onThePath = currentTile;
+                    System.out.println("(" + onThePath.getRow() + "," + onThePath.getColumn() + ")");
+                    System.out.println("The total path cost is " + goal.getPathWeight());
                     
-                    int temp_path_weight = currentTile.getPathWeight() + neighbors[i].weight();
+                    while (true) {
+                        if (path.contains(onThePath)) {
+                            break;
+                        }
+                    
+                        path.add(0, onThePath);
+                        onThePath.setOnPath(true);
+                        
+                        if (onThePath.getParent() != null) {
+                            onThePath = onThePath.getParent();
+                        } 
+                    }
+                    if (keyTileIndex == 0) {
+                        return path;
+                    } else {
+                        queue.clear();
+                        visited.clear();
+                        queue.add(currentTile);
+                        keyTileIndex -= 1;
+                        // continue;
+                    }
+                }
+                
+                Tile[] neighbors = grid.getNeighbors(currentTile);
+                System.out.println("the current tile is (" + currentTile.getRow() + "," + currentTile.getColumn() + ")");
 
-                    if (!visited.contains(neighbors[i])) {
-                        if (queue.contains(neighbors[i])){
-                            if (temp_path_weight < neighbors[i].getPathWeight()) {
+
+                for (int i = 0; i < 4; i ++) {
+                    if (neighbors[i] != null) {
+                        
+                        int temp_path_weight = currentTile.getPathWeight() + neighbors[i].weight();
+
+                        if (!visited.contains(neighbors[i])) {
+                            if (queue.contains(neighbors[i])){
+                                if (temp_path_weight < neighbors[i].getPathWeight()) {
+                                    neighbors[i].setParent(currentTile);
+                                    neighbors[i].setPathWeight(temp_path_weight);
+                                    queue.add(neighbors[i]);
+                                } 
+                            } else {
                                 neighbors[i].setParent(currentTile);
                                 neighbors[i].setPathWeight(temp_path_weight);
                                 queue.add(neighbors[i]);
-                            } 
-                        } else {
-                            neighbors[i].setParent(currentTile);
-                            neighbors[i].setPathWeight(temp_path_weight);
-                            queue.add(neighbors[i]);
+                            }
                         }
                     }
                 }
-            }
 
-            visited.add(currentTile);
-            currentTile = queue.poll();
+                visited.add(currentTile);
+                currentTile = queue.poll();
 
-            while (visited.contains(currentTile)) {
-                try {
-                    currentTile = queue.poll();
-                } catch(Exception e) {
-                    System.out.println("The queue is empty");
-                    break;
-                }  
+                while (visited.contains(currentTile)) {
+                    try {
+                        currentTile = queue.poll();
+                    } catch(Exception e) {
+                        System.out.println("The queue is empty");
+                        break;
+                    }  
+                }
             }
         }
         
@@ -200,9 +205,12 @@ public class Pathfinder extends Grid {
 
     // A* Search
     public ArrayList<Tile> aStar_pathfinding() {
-
         int m = grid.getRows(); // number of rows
         int n = grid.getColumns(); // number of columns
+        ArrayList<Tile> keyTilesArray = grid.getKeyTilesArray();
+        Collections.sort(keyTilesArray, new AStarComparator());
+        
+        int keyTileIndex = keyTilesArray.size()-1;
         
         ArrayList<Tile> path = new ArrayList<>();
         PriorityQueue<Tile> queue = new PriorityQueue<Tile>(new AStarComparator()); // priority queue to hold unvisited Tiles
@@ -217,64 +225,73 @@ public class Pathfinder extends Grid {
             }
         }
         grid.getTile(0,0).setPathWeight(0);
+        while (keyTileIndex>=0) {
+            while (!queue.isEmpty()) { 
+                if (currentTile.equals(keyTilesArray.get(keyTileIndex))) { //If the goal has been found
+                    System.out.println("FOUND IT");
 
-        while (!queue.isEmpty()) { 
-            if (currentTile.equals(goal)) { //If the goal has been found
-                System.out.println("FOUND IT");
-
-                Tile onThePath = currentTile;
-                System.out.println("(" + onThePath.getRow() + "," + onThePath.getColumn() + ")");
-                System.out.println("The total path cost is " + goal.getPathWeight());
-                
-                while (true) {
-                    if (path.contains(onThePath)) {
-                        break;
-                    }
-                   
-                    path.add(0, onThePath);
-                    onThePath.setOnPath(true);
-                    if (onThePath.getParent() != null) {
-                        onThePath = onThePath.getParent();
-                    } 
-                }
-                return path;
-            }
-            
-            Tile[] neighbors = grid.getNeighbors(currentTile);
-            System.out.println("the current tile is (" + currentTile.getRow() + "," + currentTile.getColumn() + ")");
-
-
-            for (int i = 0; i < 4; i ++) {
-                if (neighbors[i] != null) {
+                    Tile onThePath = currentTile;
+                    System.out.println("(" + onThePath.getRow() + "," + onThePath.getColumn() + ")");
+                    System.out.println("The total path cost is " + goal.getPathWeight());
                     
-                    int temp_path_weight = currentTile.getPathWeight() + neighbors[i].weight();
+                    while (true) {
+                        if (path.contains(onThePath)) {
+                            break;
+                        }
+                    
+                        path.add(0, onThePath);
+                        onThePath.setOnPath(true);
+                        if (onThePath.getParent() != null) {
+                            onThePath = onThePath.getParent();
+                        } 
+                    }
+                    if (keyTileIndex == 0) {
+                        return path;
+                    } else {
+                        queue.clear();
+                        visited.clear();
+                        queue.add(currentTile);
+                        keyTileIndex -= 1;
+                        // continue;
+                    }
+                }
+                
+                Tile[] neighbors = grid.getNeighbors(currentTile);
+                System.out.println("the current tile is (" + currentTile.getRow() + "," + currentTile.getColumn() + ")");
 
-                    if (!visited.contains(neighbors[i])) {
-                        if (queue.contains(neighbors[i])){
-                            if (temp_path_weight < neighbors[i].getPathWeight()) {
+
+                for (int i = 0; i < 4; i ++) {
+                    if (neighbors[i] != null) {
+                        
+                        int temp_path_weight = currentTile.getPathWeight() + neighbors[i].weight();
+
+                        if (!visited.contains(neighbors[i])) {
+                            if (queue.contains(neighbors[i])){
+                                if (temp_path_weight < neighbors[i].getPathWeight()) {
+                                    neighbors[i].setParent(currentTile);
+                                    neighbors[i].setPathWeight(temp_path_weight);
+                                    queue.add(neighbors[i]);
+                                } 
+                            } else {
                                 neighbors[i].setParent(currentTile);
                                 neighbors[i].setPathWeight(temp_path_weight);
                                 queue.add(neighbors[i]);
-                            } 
-                        } else {
-                            neighbors[i].setParent(currentTile);
-                            neighbors[i].setPathWeight(temp_path_weight);
-                            queue.add(neighbors[i]);
+                            }
                         }
                     }
                 }
-            }
 
-            visited.add(currentTile);
-            currentTile = queue.poll();
+                visited.add(currentTile);
+                currentTile = queue.poll();
 
-            while (visited.contains(currentTile)) {
-                try {
-                    currentTile = queue.poll();
-                } catch(Exception e) {
-                    System.out.println("The queue is empty");
-                    break;
-                }  
+                while (visited.contains(currentTile)) {
+                    try {
+                        currentTile = queue.poll();
+                    } catch(Exception e) {
+                        System.out.println("The queue is empty");
+                        break;
+                    }  
+                }
             }
         }
         

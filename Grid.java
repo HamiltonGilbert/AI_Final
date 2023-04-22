@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Grid {
     private int rows;
@@ -64,27 +63,6 @@ public class Grid {
         // this.goal = null;
     }
 
-    // private int[][] randomize_tiles(int rows, int columns, int numTiles) {
-    //     int[][] random_tiles = new int[numTiles][numTiles];
-    //     Random x_rand = new Random(rows);
-    //     Random y_rand = new Random(columns);
-
-    //     for (int i = 0; i < numTiles; i++) {
-    //         random_tiles[i][0] = x_rand.nextInt(rows);
-    //         random_tiles[i][1] = y_rand.nextInt(rows);
-    //     }
-    //     return random_tiles;
-
-    // }
-
-    // private Boolean check_obstructions(int rows, int columns, int[][] current_obstacles) {
-    //     // int[][] random_tiles = new int[numTiles][numTiles];
-    //     for (int i = 0; i < current_obstacles.length; i++) {
-            
-    //     }
-
-    //     return true;
-    // }
 
     private void init_grid() {
         gridTiles = new Tile[getRows()][getColumns()];
@@ -218,7 +196,7 @@ public class Grid {
         private boolean is_key_tile;
         private Tile parent;
 
-        public Tile(int row, int column, boolean is_goal, boolean is_obstacle, int weight) { //TODO eventually add weight as param and parent?
+        public Tile(int row, int column, boolean is_goal, boolean is_obstacle, int weight) { 
             this.row = row;
             this.column = column;
             this.is_goal = is_goal;
@@ -275,7 +253,7 @@ public class Grid {
         }
 
         public void setKeyTile(boolean b) {
-            this.weight = -100;
+            this.weight = 0;
             this.is_key_tile = b;
         }
 
@@ -288,6 +266,9 @@ public class Grid {
         }
 
         public void setOnPath(boolean on_path){
+            if (on_path) {
+                this.weight = 0;
+            }
             this.on_path = on_path;
         }
 
