@@ -21,6 +21,7 @@ public class Pathfinder extends Grid {
         ArrayList<Tile> path = new ArrayList<>();
         Tile currentTile = start;
         int keyTileIndex = grid.getKeyTilesArray().size()-1;
+
         
 
         queue.add(currentTile);
@@ -29,7 +30,7 @@ public class Pathfinder extends Grid {
         while (keyTileIndex>=0) {
             while (!queue.isEmpty()) {
                 if ((!visited.contains(currentTile))) {
-                    if (currentTile.equals(grid.getKeyTilesArray().get(grid.getKeyTilesArray().size()-1))) { //If the goal has been found  //TODO needs to change to keyTile
+                    if (currentTile.equals(grid.getKeyTilesArray().get(keyTileIndex))) { //If the goal has been found  //TODO needs to change to keyTile
                         System.out.println("FOUND IT");
     
                         Tile onThePath = currentTile;
@@ -45,18 +46,26 @@ public class Pathfinder extends Grid {
                                 onThePath = onThePath.getParent();
                             } 
                         }
-                        // if (keyTileIndex == grid.getKeyTilesArray().size()-1) {
+                        if (keyTileIndex == 0) {
                             return path;
-                        // }
-                        
-                    } else if (currentTile.equals(grid.getKeyTilesArray().get(keyTileIndex))) { //keyTile has been found
-                        queue.clear();
-                        visited.clear();
-                        queue.add(currentTile);
-                        keyTileIndex -= 1;
-                    } 
+                        } else {
+                            queue.clear();
+                            visited.clear();
+                            queue.add(currentTile);
+                            keyTileIndex -= 1;
+                            // continue;
+                        }
+                    }
+                    // } else if (currentTile.equals(grid.getKeyTilesArray().get(keyTileIndex))) { //keyTile has been found
+                    //     System.out.println("FOUND IT");
+                    //     System.out.println("(" + currentTile.getRow() + "," + currentTile.getColumn() + ")");
+                    //     queue.clear();
+                    //     visited.clear();
+                    //     queue.add(currentTile);
+                    //     keyTileIndex += 1;
+                    // } 
     
-                        System.out.println("Current Tile: (" + currentTile.getRow() + "," + currentTile.getColumn() + ")");
+                        // System.out.println("Current Tile: (" + currentTile.getRow() + "," + currentTile.getColumn() + ")");
                     
                         Tile[] neighbors = grid.getNeighborsBFS(currentTile);
                         // System.out.println("queue is not empty");
@@ -78,7 +87,7 @@ public class Pathfinder extends Grid {
                                             childNeighbors[j].setParent(neighbors[i]);
                                         }
                                         
-                                        System.out.println("(" + childNeighbors[j].getRow() + "," + childNeighbors[j].getColumn() + ")\'s parent is (" + neighbors[i].getRow() + "," + neighbors[i].getColumn() + ")");
+                                        // System.out.println("(" + childNeighbors[j].getRow() + "," + childNeighbors[j].getColumn() + ")\'s parent is (" + neighbors[i].getRow() + "," + neighbors[i].getColumn() + ")");
                                         queue.add(childNeighbors[j]);
                                     }
                                 }
