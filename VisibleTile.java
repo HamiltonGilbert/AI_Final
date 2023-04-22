@@ -20,7 +20,7 @@ public class VisibleTile extends JButton implements MouseListener {
         this.visualization = vis;
         this.dimension = dimension;
         setIcon(resizeImage(tileImage));
-        setFont(new Font("Arial", Font.PLAIN, dimension.height/3));
+        setFont(new Font("Arial", Font.PLAIN, dimension.height));
         setPreferredSize(dimension);
         addMouseListener(this);
     }
@@ -29,31 +29,33 @@ public class VisibleTile extends JButton implements MouseListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        g.drawString(text, dimension.width/3, dimension.height/2);
+        g.drawString(text, dimension.width/3, dimension.height);
     }
 
     public void setObstacle() {
         setIcon(resizeImage(obstacleImage));
-        setFont(new Font("Arial", Font.PLAIN, dimension.height/3));
     }
 
     public void setKeyTile() {
         setIcon(resizeImage(keyTileImage));
-        setFont(new Font("Arial", Font.PLAIN, dimension.height/3));
     }
 
     public void setStart() {
         setIcon(resizeImage(startImage));
-        setFont(new Font("Arial", Font.PLAIN, dimension.height/3));
     }
 
     public void setRegularTile() {
         setIcon(resizeImage(tileImage));
-        setFont(new Font("Arial", Font.PLAIN, dimension.height/3));
     }
 
     public void setVisited(boolean visited, int stepNum) {
         if (visited) this.text = "" + stepNum;
+        else this.text = "";
+        repaint();
+    }
+
+    public void setVisited(boolean visited, String text) {
+        if (visited) this.text = text;
         else this.text = "";
         repaint();
     }

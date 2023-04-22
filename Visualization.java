@@ -10,7 +10,7 @@ public class Visualization extends Grid {
     private Pathfinder pathfinder;
     private JFrame frame = null;
     // temp holder of what step the visualization is on
-    private int stepNum;
+    // private int stepNum;
     // holds grid of visible tiles
     private VisibleTile[][] tileGrid;
     // tile dimensions
@@ -57,7 +57,7 @@ public class Visualization extends Grid {
         }
 
         visualized = new ArrayList<Tile>();
-        this.stepNum = 0;
+        // this.stepNum = 0;
         JFrame frame = newFrame();
         JPanel menu = createMenu();
         JPanel grid = createGrid();
@@ -186,8 +186,8 @@ public class Visualization extends Grid {
         int column = tile.getColumn();
 
         VisibleTile visibleTile = this.tileGrid[row][column];
-        visibleTile.setVisited(true, stepNum);
-        stepNum++;
+        visibleTile.setVisited(true, "*");
+        // stepNum++;
 
         return path;
     }
@@ -197,8 +197,8 @@ public class Visualization extends Grid {
             int column = tile.getColumn();
         
             VisibleTile visibleTile = this.tileGrid[row][column];
-            visibleTile.setVisited(false, stepNum);
-            stepNum--;
+            visibleTile.setVisited(false, "*");
+            // stepNum--;
         
             ArrayList<Tile> newPath = new ArrayList<Tile>();
             newPath.add(tile);
