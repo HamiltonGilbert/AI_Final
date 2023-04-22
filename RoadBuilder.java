@@ -32,7 +32,7 @@ public class RoadBuilder {
         // Grid grid = new Grid(30, 10, makeCoords(start), makeCoords(goal));
         // visualize
         // new Visualization("Dijkstras", grid, tileWidth, tileHeight);
-        new Visualization("BFS", grid1, tileWidth, tileHeight);
+        new Visualization("A*", grid1, tileWidth, tileHeight);
         // new Visualization(grid2, pathfinder2.bfs_pathfinding(), tileWidth, tileHeight);
         // new Visualization("A*", grid3, pathfinder3.aStar_pathfinding(), tileWidth, tileHeight);
 
