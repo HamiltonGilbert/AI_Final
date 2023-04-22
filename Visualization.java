@@ -8,6 +8,7 @@ public class Visualization extends Grid {
     private String name;
     private Grid grid;
     private Pathfinder pathfinder;
+    private JFrame frame = null;
     // temp holder of what step the visualization is on
     private int stepNum;
     // holds grid of visible tiles
@@ -19,14 +20,15 @@ public class Visualization extends Grid {
     private ArrayList<Tile> path;
     // visited visible tiles
     private ArrayList<Tile> visualized;
-    // Set Tiles to ___ on click
+    // Set Tiles to this on click
     private String setTiles;
     // whether mouse is down
     private boolean mouseDown = false;
+    // helper for key tile vis
     private int[] moveKeyTile;
     // stored grid data
     private int[] start;
-    private int[] goal;
+    private int[] goal = {0, 0};
     private ArrayList<int[]> obstacles = new ArrayList<int[]>();
     private ArrayList<int[]> keyTiles = new ArrayList<int[]>();
 
@@ -34,26 +36,26 @@ public class Visualization extends Grid {
     public Visualization(String name, Grid grid, int width, int height) {
         this.name = name;
         this.grid = grid;
-        tileWidth = width;
-        tileHeight = height;
-        setTiles = null;
-        start = grid.getStart().getIndex();
-        goal = grid.getGoal().getIndex();
+        this.tileWidth = width;
+        this.tileHeight = height;
+        this.setTiles = null;
+        this.start = grid.getStart().getIndex();
         visualize();
     }
     private void visualize() {
-        int[][] temp = grid.getObstacles();
+        int[][] temp = this.grid.getObstacles();
         if (temp.length != 0) {
             for (int i=0; i<temp.length; i++) {
-            obstacles.add(temp[i]);
+            this.obstacles.add(temp[i]);
             }
         }
-        temp = grid.getKeyTiles();
+        temp = this.grid.getKeyTiles();
         if (temp.length != 0) {
             for (int i=0; i<temp.length; i++) {
-                keyTiles.add(temp[i]);
+                this.keyTiles.add(temp[i]);
             }
         }
+
         visualized = new ArrayList<Tile>();
         this.stepNum = 0;
         JFrame frame = newFrame();
@@ -62,6 +64,11 @@ public class Visualization extends Grid {
         frame.add(menu, BorderLayout.NORTH);
         frame.add(grid, BorderLayout.CENTER);
         frame.setVisible(true);
+        // dispose old frame
+        if (this.frame != null) {
+            this.frame.dispose();
+        }
+        this.frame = frame;
     }
 
     private void createPath() {
@@ -127,17 +134,14 @@ public class Visualization extends Grid {
 
     public void mouseOver(int[] coords) {
         if (mouseDown) {
-            // tile isnt the goal or the start
-            if (coords != this.goal && coords != this.start) {
-                if (setTiles == "Goal") {
-                    this.tileGrid[this.goal[0]][this.goal[1]].setRegularTile();
-                    this.tileGrid[coords[0]][coords[1]].setGoal();
-                    this.goal = coords;
-                }
+            // tile isnt the the start or a keyTile
+            if (coords != this.start) {
                 if (setTiles == "Start") {
+                    this.tileGrid[this.start[0]][this.start[1]].setRegularTile();
+                    this.tileGrid[coords[0]][coords[1]].setStart();
                     this.start = coords;
                 }
-                if (setTiles == "Obstacle") {
+                if (setTiles == "Obstacle" && !keyTiles.contains(coords)) {
                     if (!obstacles.contains(coords)) {
                         this.obstacles.add(coords);
                         this.tileGrid[coords[0]][coords[1]].setObstacle();
@@ -149,6 +153,7 @@ public class Visualization extends Grid {
                     }
                     if (this.moveKeyTile != null) {
                         this.tileGrid[this.moveKeyTile[0]][this.moveKeyTile[1]].setRegularTile();
+                        this.keyTiles.remove(this.moveKeyTile);
                     }
                     this.moveKeyTile = coords;
                     this.keyTiles.add(coords);
@@ -223,16 +228,13 @@ public class Visualization extends Grid {
                 if (this.grid.getTile(i, j).isObstacle()) {tile.setObstacle();}
                 // check if keyTile
                 if (this.grid.getTile(i, j).isKeyTile()) {tile.setKeyTile();}
-                // check if goal
-                if (this.grid.getTile(i, j).isGoal()) {tile.setGoal(); System.out.println("HIT!!!!!!!!!!!");}
                 //add to GridPanel
                 this.tileGrid[i][j] = tile;
                 gridPanel.add(tile);
             }
         }
-
-        //set goal
-        this.tileGrid[this.grid.getGoal().getRow()][this.grid.getGoal().getColumn()].setGoal();
+        // add start
+        this.tileGrid[this.grid.getStart().getRow()][this.grid.getStart().getColumn()].setStart();
 
         return gridPanel;
     }
@@ -245,17 +247,15 @@ public class Visualization extends Grid {
         menuLayout.setHgap(0);
         JPanel menu = new JPanel(menuLayout);
         menu.setSize(buttonWidth*2, buttonHeight*2);
-        RunButton stepBtn = new RunButton(this, new Dimension(buttonWidth, buttonHeight));
-        SetTileButton goalBtn = new SetTileButton(this, new Dimension(buttonWidth, buttonHeight), "Goal");
+        RunButton runBtn = new RunButton(this, new Dimension(buttonWidth, buttonHeight));
         SetTileButton startBtn = new SetTileButton(this, new Dimension(buttonWidth, buttonHeight), "Start");
         SetTileButton obstacleBtn = new SetTileButton(this, new Dimension(buttonWidth, buttonHeight), "Obstacle");
         SetTileButton keyTileBtn = new SetTileButton(this, new Dimension(buttonWidth, buttonHeight), "KeyTile");
         SetTileButton eraseBtn = new SetTileButton(this, new Dimension(buttonWidth, buttonHeight), "Erase");
-        menu.add(stepBtn);
-        menu.add(goalBtn);
+        menu.add(runBtn);
+        menu.add(startBtn);
         menu.add(obstacleBtn);
         menu.add(eraseBtn);
-        menu.add(startBtn);
         menu.add(keyTileBtn);
         return menu;
     }
@@ -266,7 +266,7 @@ public class Visualization extends Grid {
         JFrame frame = new JFrame();
         frame.setTitle("Pathfinding Visualization: " + name);
         frame.setLayout(frameLayout);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(new Dimension(this.grid.getColumns() * tileWidth, (this.grid.getRows()) * tileHeight + 110));
         frame.setResizable(false);
         return frame;

@@ -7,7 +7,7 @@ import java.awt.event.*;
 public class VisibleTile extends JButton implements MouseListener {
     private ImageIcon tileImage = new ImageIcon("Images/Tile.png");
     private ImageIcon obstacleImage = new ImageIcon("Images/Obstacle.png");
-    private ImageIcon goalImage = new ImageIcon("Images/Goal.png");
+    private ImageIcon startImage = new ImageIcon("Images/Start.png");
     private ImageIcon keyTileImage = new ImageIcon("Images/KeyTile.png");
     private Visualization visualization;
     private int[] coords;
@@ -42,8 +42,8 @@ public class VisibleTile extends JButton implements MouseListener {
         setFont(new Font("Arial", Font.PLAIN, dimension.height/3));
     }
 
-    public void setGoal() {
-        setIcon(resizeImage(goalImage));
+    public void setStart() {
+        setIcon(resizeImage(startImage));
         setFont(new Font("Arial", Font.PLAIN, dimension.height/3));
     }
 
