@@ -52,13 +52,10 @@ public class Pathfinder extends Grid {
                             visited.clear();
                             queue.add(currentTile);
                             keyTileIndex -= 1;
-                            // continue;
                         }
                     }
-                        // System.out.println("Current Tile: (" + currentTile.getRow() + "," + currentTile.getColumn() + ")");
                     
                         Tile[] neighbors = grid.getNeighborsBFS(currentTile);
-                        // System.out.println("queue is not empty");
     
                         for (int i = 0; i < neighbors.length; i ++){
                             if ((neighbors[i] != null) && (!visited.contains(neighbors[i]))) {
@@ -66,7 +63,6 @@ public class Pathfinder extends Grid {
                                     neighbors[i].setParent(currentTile);
                                 }
                                 
-                                // System.out.println("adding (" + currentTile.getRow() + "," + currentTile.getColumn() + ") to the queue");
                                 queue.add(neighbors[i]);
     
                                 Tile[] childNeighbors = grid.getNeighborsBFS(neighbors[i]);    //the neighbors of the child Node of currentTile
@@ -77,7 +73,6 @@ public class Pathfinder extends Grid {
                                             childNeighbors[j].setParent(neighbors[i]);
                                         }
                                         
-                                        // System.out.println("(" + childNeighbors[j].getRow() + "," + childNeighbors[j].getColumn() + ")\'s parent is (" + neighbors[i].getRow() + "," + neighbors[i].getColumn() + ")");
                                         queue.add(childNeighbors[j]);
                                     }
                                 }
@@ -227,18 +222,16 @@ public class Pathfinder extends Grid {
         grid.getTile(0,0).setPathWeight(0);
         while (keyTileIndex>=0) {
             while (!queue.isEmpty()) { 
-                if (currentTile.equals(keyTilesArray.get(keyTileIndex))) { //If the goal has been found
+                if (currentTile.equals(grid.getKeyTilesArray().get(keyTileIndex))) { //If the goal has been found 
                     System.out.println("FOUND IT");
 
                     Tile onThePath = currentTile;
                     System.out.println("(" + onThePath.getRow() + "," + onThePath.getColumn() + ")");
-                    System.out.println("The total path cost is " + goal.getPathWeight());
-                    
                     while (true) {
                         if (path.contains(onThePath)) {
                             break;
                         }
-                    
+                       
                         path.add(0, onThePath);
                         onThePath.setOnPath(true);
                         if (onThePath.getParent() != null) {
@@ -252,12 +245,12 @@ public class Pathfinder extends Grid {
                         visited.clear();
                         queue.add(currentTile);
                         keyTileIndex -= 1;
-                        // continue;
                     }
                 }
                 
+                goal = keyTilesArray.get(keyTileIndex);
                 Tile[] neighbors = grid.getNeighbors(currentTile);
-                System.out.println("the current tile is (" + currentTile.getRow() + "," + currentTile.getColumn() + ")");
+                // System.out.println("the current tile is (" + currentTile.getRow() + "," + currentTile.getColumn() + ")");
 
 
                 for (int i = 0; i < 4; i ++) {
