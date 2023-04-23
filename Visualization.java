@@ -74,7 +74,9 @@ public class Visualization extends Grid {
     private void createPath() {
         newGrid();
         this.pathfinder = new Pathfinder(grid);
-        this.path = pathfinder.bfs_pathfinding();
+        if (this.name == "A*") {this.path = pathfinder.aStar_pathfinding();}
+        if (this.name == "BFS") {this.path = pathfinder.bfs_pathfinding();}
+        else {this.path = pathfinder.dijkstra_pathfinding();}
     }
     private void clearPath() {
         while (!visualized.isEmpty()) {
