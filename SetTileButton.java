@@ -18,11 +18,6 @@ public class SetTileButton extends JButton implements MouseListener {
         addMouseListener(this);
     }
 
-    // @Override
-    // public void paintComponent(Graphics g) {
-
-    // }
-
     public void mouseClicked(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {setCursor(new Cursor(Cursor.HAND_CURSOR));}
     public void mouseExited(MouseEvent e) {setCursor(new Cursor(Cursor.DEFAULT_CURSOR));}

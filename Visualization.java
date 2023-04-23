@@ -9,8 +9,6 @@ public class Visualization extends Grid {
     private Grid grid;
     private Pathfinder pathfinder;
     private JFrame frame = null;
-    // temp holder of what step the visualization is on
-    // private int stepNum;
     // holds grid of visible tiles
     private VisibleTile[][] tileGrid;
     // tile dimensions
@@ -85,7 +83,6 @@ public class Visualization extends Grid {
     }
 
     public void runBtnHit() {
-        System.out.println("HIT!");
         clearPath();
         createPath();
         while (!path.isEmpty()) {
@@ -94,37 +91,8 @@ public class Visualization extends Grid {
     }
 
     public void newSetTiles(String tileName) {
-        // if we already have that as our setTiles, make it null instead
-        // if (setTiles == tileName) {this.setTiles = null;}
-        // else {this.setTiles = tileName;}
         this.setTiles = tileName;
     }
-
-    // public void tileClicked(int[] coords) {
-    //     // tile isnt the goal or the start
-    //     if (coords != this.goal && coords != this.start) {
-    //         if (setTiles == "Goal") {
-    //             this.tileGrid[this.goal[0]][this.goal[1]].setRegularTile();
-    //             this.tileGrid[coords[0]][coords[1]].setGoal();
-    //             this.goal = coords;
-    //         }
-    //         if (setTiles == "Start") {
-    //             this.start = coords;
-    //         }
-    //         if (setTiles == "Obstacle") {
-    //             if (!obstacles.contains(coords)) {
-    //                 this.obstacles.add(coords);
-    //                 this.tileGrid[coords[0]][coords[1]].setObstacle();
-    //             }
-    //         }
-    //         if (setTiles == "KeyTile") {
-    //             if (!keyTiles.contains(coords)) {
-    //                 this.keyTiles.add(coords);
-    //                 this.tileGrid[coords[0]][coords[1]].setKeyTile();
-    //             }
-    //         }
-    //     }
-    // }
 
     public void mouseDown(int[] coords) {
         this.mouseDown = true;
@@ -189,7 +157,6 @@ public class Visualization extends Grid {
 
         VisibleTile visibleTile = this.tileGrid[row][column];
         visibleTile.setVisited(true, "*");
-        // stepNum++;
 
         return path;
     }

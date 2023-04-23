@@ -2,8 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-
-// original code: https://github.com/kdeloach/labs/blob/master/java/yahtzee/src/Dice.java
 public class VisibleTile extends JButton implements MouseListener {
     private ImageIcon tileImage = new ImageIcon("Images/Tile.png");
     private ImageIcon obstacleImage = new ImageIcon("Images/Obstacle.png");
